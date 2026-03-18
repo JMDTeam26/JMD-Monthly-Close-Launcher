@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JMD Monthly Close Launcher</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    background: #f4f5f7;
+    color: #1a1a1a;
+    padding: 32px 24px;
+  }
+
+  .page { max-width: 820px; margin: 0 auto; }
+
+  .header {
+    background: #1F3864;
+    color: #fff;
+    border-radius: 8px 8px 0 0;
+    padding: 20px 24px 16px;
+  }
+  .header h1 { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
+  .header p { font-size: 13px; color: #a8bedb; margin-top: 4px; }
+
+  .body { background: #fff; border: 1px solid #dde1e8; border-top: none; border-radius: 0 0 8px 8px; padding: 24px; }
+
+  .section { margin-bottom: 24px; }
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #1F3864;
+    border-bottom: 2px solid #1F3864;
+    padding-bottom: 6px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-label .step {
+    background: #1F3864;
+    color: #fff;
+    font-size: 10px;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .row { display: grid; gap: 12px; margin-bottom: 12px; }
+  .row-2 { grid-template-columns: 1fr 1fr; }
+  .row-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .row-4 { grid-template-columns: 1fr 1fr 1fr 80px; }
+
+  .field { display: flex; flex-direction: column; gap: 4px; }
+  .field label { font-size: 12px; color: #555; font-weight: 600; }
+  .field input, .field select, .field textarea {
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    color: #1a1a1a;
+    background: #f9fafb;
+    border: 1px solid #ccd0d8;
+    border-radius: 5px;
+    padding: 7px 10px;
+    width: 100%;
+    transition: border-color 0.15s;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    outline: none;
+    border-color: #1F3864;
+    background: #fff;
+  }
+  .field textarea { resize: vertical; min-height: 68px; line-height: 1.5; }
+  .hint { font-size: 11px; color: #888; margin-top: 3px; }
+
+  /* Client selector tabs */
+  .client-tabs { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+  .client-tab {
+    padding: 6px 14px;
+    border: 1px solid #ccd0d8;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    background: #f9fafb;
+    color: #555;
+    transition: all 0.15s;
+  }
+  .client-tab:hover { border-color: #1F3864; color: #1F3864; }
+  .client-tab.active { background: #1F3864; color: #fff; border-color: #1F3864; }
+  .add-client-tab {
+    padding: 6px 14px;
+    border: 1px dashed #ccd0d8;
+    border-radius: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    background: none;
+    color: #888;
+  }
+  .add-client-tab:hover { border-color: #1F3864; color: #1F3864; }
+
+  /* Open items */
+  .oi-header {
+    display: grid;
+    grid-template-columns: 1fr 110px 88px 32px;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .oi-header span { font-size: 11px; color: #888; font-weight: 600; text-transform: uppercase; }
+  .oi-row {
+    display: grid;
+    grid-template-columns: 1fr 110px 88px 32px;
+    gap: 8px;
+    margin-bottom: 6px;
+    align-items: start;
+  }
+  .oi-row input, .oi-row select {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    color: #1a1a1a;
+    background: #f9fafb;
+    border: 1px solid #ccd0d8;
+    border-radius: 5px;
+    padding: 6px 8px;
+    width: 100%;
+  }
+  .oi-row .oi-pri-URGENT { background: #ffe0e0; }
+  .oi-row .oi-pri-HIGH { background: #fff4cc; }
+  .oi-row .oi-pri-MEDIUM { background: #e8f0fb; }
+  .rm-btn {
+    background: none;
+    border: 1px solid #e0e3ea;
+    border-radius: 5px;
+    color: #aaa;
+    cursor: pointer;
+    font-size: 16px;
+    height: 32px;
+    width: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+  .rm-btn:hover { border-color: #d44; color: #d44; }
+  .add-oi-btn {
+    background: none;
+    border: 1px dashed #ccd0d8;
+    border-radius: 5px;
+    color: #888;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 6px 12px;
+    margin-top: 4px;
+    width: 100%;
+    text-align: left;
+    transition: all 0.15s;
+  }
+  .add-oi-btn:hover { border-color: #1F3864; color: #1F3864; }
+
+  /* Options checkboxes */
+  .check-row { display: flex; flex-wrap: wrap; gap: 12px; }
+  .check-item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #444; cursor: pointer; }
+  .check-item input[type="checkbox"] { width: 14px; height: 14px; accent-color: #1F3864; cursor: pointer; }
+
+  /* Generate button */
+  .gen-row { display: flex; gap: 12px; align-items: center; margin-top: 8px; }
+  .gen-btn {
+    background: #1F3864;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 11px 28px;
+    cursor: pointer;
+    transition: background 0.15s;
+    letter-spacing: 0.2px;
+  }
+  .gen-btn:hover { background: #162b4d; }
+  .gen-btn:active { transform: scale(0.98); }
+  .clear-btn {
+    background: none;
+    border: 1px solid #dde1e8;
+    border-radius: 6px;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    color: #888;
+    padding: 10px 18px;
+    cursor: pointer;
+  }
+  .clear-btn:hover { border-color: #aaa; color: #555; }
+
+  /* Output */
+  .output-wrap { display: none; margin-top: 24px; }
+  .output-wrap.show { display: block; }
+  .output-header {
+    background: #1F3864;
+    color: #fff;
+    border-radius: 6px 6px 0 0;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .output-header span { font-size: 13px; font-weight: 700; }
+  .copy-btn {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    padding: 5px 14px;
+    transition: background 0.15s;
+  }
+  .copy-btn:hover { background: rgba(255,255,255,0.25); }
+  .copy-btn.copied { background: #2e7d52; border-color: #2e7d52; }
+  .output-box {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 12px;
+    line-height: 1.7;
+    background: #f6f8fa;
+    border: 1px solid #dde1e8;
+    border-top: none;
+    border-radius: 0 0 6px 6px;
+    padding: 16px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    max-height: 480px;
+    overflow-y: auto;
+    color: #1a1a1a;
+  }
+
+  .files-section { margin-top: 16px; }
+  .files-section h3 { font-size: 13px; font-weight: 700; color: #1F3864; margin-bottom: 10px; }
+  .file-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 10px;
+    border: 1px solid #eaecf0;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    background: #fff;
+    font-size: 13px;
+    color: #333;
+  }
+  .file-num {
+    background: #1F3864;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    border-radius: 4px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .file-type {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+  .ft-xlsx { background: #e2f0d9; color: #375623; }
+  .ft-docx { background: #dae8fc; color: #1F3864; }
+  .ft-proj { background: #ede7f6; color: #4a148c; }
+
+  .footer { margin-top: 32px; text-align: center; font-size: 11px; color: #aaa; }
+
+  /* Client config modal */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 100; align-items: center; justify-content: center; }
+  .modal-overlay.show { display: flex; }
+  .modal { background: #fff; border-radius: 8px; padding: 24px; width: 500px; max-width: 95vw; }
+  .modal h3 { font-size: 16px; font-weight: 700; color: #1F3864; margin-bottom: 16px; }
+  .modal-btns { display: flex; gap: 10px; margin-top: 16px; justify-content: flex-end; }
+  .modal-save { background: #1F3864; color: #fff; border: none; border-radius: 5px; font-family: Arial, sans-serif; font-size: 13px; font-weight: 700; padding: 8px 20px; cursor: pointer; }
+  .modal-cancel { background: none; border: 1px solid #dde1e8; border-radius: 5px; font-family: Arial, sans-serif; font-size: 13px; color: #666; padding: 8px 16px; cursor: pointer; }
+
+  @media (max-width: 600px) {
+    .row-2, .row-3 { grid-template-columns: 1fr; }
+    .oi-row, .oi-header { grid-template-columns: 1fr 90px 32px; }
+    .oi-row .oi-amt-field { display: none; }
+    .oi-header .oi-amt-head { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="header">
+    <h1>JMD Business Solutions — Monthly Close Launcher</h1>
+    <p>Generate the Claude handoff prompt for any client's monthly close. Save this file to use every month.</p>
+  </div>
+
+  <div class="body">
+
+    <!-- CLIENT SELECTOR -->
+    <div class="section">
+      <div class="section-label"><span class="step">C</span> Client</div>
+      <div class="client-tabs" id="clientTabs"></div>
+    </div>
+
+    <!-- PERIOD -->
+    <div class="section">
+      <div class="section-label"><span class="step">1</span> Period</div>
+      <div class="row row-3">
+        <div class="field">
+          <label>Close Month</label>
+          <select id="closeMonth">
+            <option>January</option><option>February</option><option selected>March</option>
+            <option>April</option><option>May</option><option>June</option>
+            <option>July</option><option>August</option><option>September</option>
+            <option>October</option><option>November</option><option>December</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Year</label>
+          <input type="number" id="closeYear" value="2026" min="2024" max="2035">
+        </div>
+        <div class="field">
+          <label>Accounting Basis</label>
+          <select id="basis">
+            <option selected>Cash</option>
+            <option>Accrual</option>
+          </select>
+        </div>
+      </div>
+      <div class="row row-2">
+        <div class="field">
+          <label>Prior Month Revenue</label>
+          <input type="text" id="priorRevenue" placeholder="e.g. $70,234.10">
+          <span class="hint">From last month's Key Figures table</span>
+        </div>
+        <div class="field">
+          <label>Prior Month Net Income</label>
+          <input type="text" id="priorNI" placeholder="e.g. $59,285.60 or ($3,713.53)">
+          <span class="hint">Negative = parentheses format</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- OPEN ITEMS -->
+    <div class="section">
+      <div class="section-label"><span class="step">2</span> Open Items Carrying Forward</div>
+      <div class="oi-header">
+        <span>Description</span>
+        <span class="oi-amt-head">Amount</span>
+        <span>Priority</span>
+        <span></span>
+      </div>
+      <div id="oiList"></div>
+      <button class="add-oi-btn" onclick="addOI()">+ Add open item</button>
+      <p class="hint" style="margin-top: 8px;">These carry into the audit and Issues Log. Do not include in the client-facing note. Remove resolved items each month.</p>
+    </div>
+
+    <!-- CONTEXT -->
+    <div class="section">
+      <div class="section-label"><span class="step">3</span> Notes for This Month</div>
+      <div class="field">
+        <label>Known context Claude should factor in (optional)</label>
+        <textarea id="monthNotes" placeholder="e.g. Kelly was traveling to a conference. Annual Adobe renewal expected this month. Q1 close — quarterly reports included."></textarea>
+      </div>
+    </div>
+
+    <!-- OPTIONS -->
+    <div class="section">
+      <div class="section-label"><span class="step">4</span> Close Type</div>
+      <div class="check-row">
+        <label class="check-item"><input type="checkbox" id="optQuarterly"> Quarterly close (include Cash Flow, Owner Equity Tracker, Vendor List)</label>
+        <label class="check-item"><input type="checkbox" id="optYearEnd"> Year-end close (full audit mode)</label>
+      </div>
+    </div>
+
+    <!-- GENERATE -->
+    <div class="gen-row">
+      <button class="gen-btn" onclick="generate()">Generate Handoff Prompt</button>
+      <button class="clear-btn" onclick="clearOutput()">Clear output</button>
+    </div>
+
+    <!-- OUTPUT -->
+    <div class="output-wrap" id="outputWrap">
+      <div style="margin-top: 24px; padding: 10px 14px; background: #e8f5e9; border: 1px solid #a5d6a7; border-radius: 6px; font-size: 13px; color: #1b5e20; margin-bottom: 12px;">
+        <strong>Ready.</strong> Attach files listed below to a new Claude chat in the client's project, then paste this prompt.
+      </div>
+      <div class="output-header">
+        <span id="outputLabel">Handoff Prompt</span>
+        <button class="copy-btn" id="copyBtn" onclick="doCopy()">Copy to clipboard</button>
+      </div>
+      <div class="output-box" id="outputBox"></div>
+
+      <div class="files-section">
+        <h3>Files to attach in Claude</h3>
+        <div id="fileList"></div>
+      </div>
+    </div>
+
+  </div><!-- /body -->
+
+  <div class="footer">JMD Business Solutions | Internal Use Only | Save this file and open in any browser each month</div>
+
+</div><!-- /page -->
+
+<!-- NEW CLIENT MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" style="width: 600px; max-height: 88vh; overflow-y: auto;">
+    <h3>Add Client (This Session Only)</h3>
+    <div style="background: #FFF4CC; border: 1px solid #E6C200; border-radius: 5px; padding: 10px 14px; margin-bottom: 16px; font-size: 12px; color: #7B5800; line-height: 1.5;">
+      <strong>For your use this session only.</strong> This client will not be saved to the file and will not be visible to other team members. To add a client permanently, edit the <code>DEFAULT_CLIENTS</code> array in the HTML file and redistribute it to the team.
+    </div>
+
+    <div class="row" style="margin-bottom: 12px;">
+      <div class="field">
+        <label>Client Name (short display name)</label>
+        <input type="text" id="newClientName" placeholder="e.g. Acme Corp">
+      </div>
+    </div>
+
+    <div class="row row-2" style="margin-bottom: 12px;">
+      <div class="field">
+        <label>Entity Type</label>
+        <input type="text" id="newClientEntity" placeholder="e.g. LLC (S-Corp)">
+      </div>
+      <div class="field">
+        <label>Accounting Basis</label>
+        <select id="newClientBasis">
+          <option>Cash</option><option>Accrual</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row" style="margin-bottom: 12px;">
+      <div class="field">
+        <label>Class Structure (comma-separated, or leave blank)</label>
+        <input type="text" id="newClientClasses" placeholder="e.g. Dept A, Dept B  —  or leave blank if no classes">
+      </div>
+    </div>
+
+    <div class="row" style="margin-bottom: 12px;">
+      <div class="field">
+        <label>Revenue Pattern</label>
+        <input type="text" id="newClientRevenue" placeholder="e.g. Monthly retainer, consistent.  Or: Project-based, lumpy ($5K-$80K+). Low months are not a red flag.">
+      </div>
+    </div>
+
+    <div class="row" style="margin-bottom: 12px;">
+      <div class="field">
+        <label>Key Recurring Vendors and Expenses</label>
+        <textarea id="newClientExpenses" style="min-height: 72px;" placeholder="e.g. Rent $2,500/mo. Owner salary $6,000/mo via payroll. Software subscriptions: QuickBooks $85, Adobe $55. Insurance $420/mo."></textarea>
+      </div>
+    </div>
+
+    <div class="row" style="margin-bottom: 16px;">
+      <div class="field">
+        <label>Known Behaviors and Audit Flags</label>
+        <textarea id="newClientAudit" style="min-height: 72px;" placeholder="e.g. PayPal transactions — check memo for actual vendor. Annual insurance renewal in March. Owner draws via Zelle, not payroll. Not Profit First."></textarea>
+      </div>
+    </div>
+
+    <div style="margin-bottom: 16px;">
+      <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #1F3864; border-bottom: 2px solid #1F3864; padding-bottom: 6px; margin-bottom: 10px;">Pre-loaded Open Items</div>
+      <div class="oi-header">
+        <span>Description</span>
+        <span class="oi-amt-head">Amount</span>
+        <span>Priority</span>
+        <span></span>
+      </div>
+      <div id="modalOIList"></div>
+      <button class="add-oi-btn" onclick="addModalOI()">+ Add open item</button>
+      <p class="hint" style="margin-top: 6px;">These will pre-load in the Open Items section each time you select this client.</p>
+    </div>
+
+    <div class="modal-btns">
+      <button class="modal-cancel" onclick="closeModal()">Cancel</button>
+      <button class="modal-save" onclick="saveNewClient()">Save Client</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+const MONTH_ENDS = {
+  January: 31, February: 28, March: 31, April: 30, May: 31, June: 30,
+  July: 31, August: 31, September: 30, October: 31, November: 30, December: 31
+};
+
+function lastDay(month, year) {
+  if (month === 'February') {
+    return (year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0)) ? 29 : 28;
+  }
+  return MONTH_ENDS[month];
+}
+
+function prevMonth(month, year) {
+  const idx = MONTHS.indexOf(month);
+  if (idx === 0) return { m: 'December', y: year - 1 };
+  return { m: MONTHS[idx - 1], y: year };
+}
+
+// --- CLIENT LIST ---
+// Clients are defined here in the file and shared across the whole team.
+// To add a client: copy one of the blocks below, fill in the fields, and re-distribute the file.
+// Do NOT use the browser Add Client button for permanent additions — those are local only.
+
+const DEFAULT_CLIENTS = [
+  {
+    id: 'engage',
+    name: 'Engage Leadership',
+    entity: 'LLC (Partnership)',
+    basis: 'Cash',
+    classes: 'Joint, Kelly, Randy',
+    notes: 'Revenue is project-based and lumpy ($3K to $100K+ per month). Negative GP for one partner is timing, not an error. COBRA (~$1,788/mo for Randy) is the single largest recurring expense. Hulu charge + Platinum Digital Entertainment Credit = net $0 for Randy. Not a Profit First client. All revenue and expenses tracked by class: Joint, Kelly, Randy. Generic vendor names are expected QBO placeholders. Do not flag them unless class or account is wrong. Do not flag known recurring items unless amount is >25% outside normal range. Do not produce advisory or CFO-level commentary.',
+    defaultOI: [
+      { desc: 'McAfee renewal ($149.99) - confirm business use or personal (Kelly)', amt: '$149.99', pri: 'MEDIUM' },
+      { desc: 'Apple $95.99 - confirm business purpose (Kelly)', amt: '$95.99', pri: 'MEDIUM' },
+      { desc: 'SchoolStore via PayPal ($75.95) - confirm client/purpose (Kelly)', amt: '$75.95', pri: 'LOW' },
+      { desc: 'Dropbox $119.88 - confirm annual vs monthly (Kelly)', amt: '$119.88', pri: 'LOW' },
+      { desc: 'McGriff COBRA double billing Feb 2026 - verify Jan late-billed', amt: '$3,578.67', pri: 'HIGH' },
+      { desc: 'Microsoft 365 $129.99 on Kelly card - confirm product and class', amt: '$129.99', pri: 'MEDIUM' },
+      { desc: 'Acuity $192 on Randy card - confirm purpose (normally Kelly only)', amt: '$192.00', pri: 'MEDIUM' },
+      { desc: 'Apple $52.98 recurring - business purpose unconfirmed (Kelly)', amt: '$52.98', pri: 'MEDIUM' },
+      { desc: 'ATD Membership $269.10 - confirm business purpose (Randy)', amt: '$269.10', pri: 'LOW' },
+      { desc: 'American Express renewal $895 - confirm business card (Randy)', amt: '$895.00', pri: 'LOW' },
+    ]
+  },
+  {
+    id: 'dpm',
+    name: 'Dental Practice Mastery',
+    entity: 'S-Corporation',
+    basis: 'Cash',
+    classes: '',
+    notes: 'Digital dental coaching and education company. Revenue is subscription-based and one-time course sales, all via Stripe. Monthly revenue typically $270K-$330K+. No class tracking in QBO. Mentor payments (5140 Mentors) are revenue-share, billed for prior month and paid via Bill Payment. Contractor payment requests come via Slack (#dpm-payments). Payments flow through Gusto, Zelle, Venmo, ACH, and wire - non-Gusto payments must be tracked separately. Personal expenses (home utilities SoCalGas/IRWD, HOA, personal auto insurance Mercury/Tesla, personal auto lease Tesla Finance) run through business accounts and should be coded to DPM Distributions (2661), not deductible expense accounts. Review each month. Venmo charges coded to vendor Venmo are owner distributions - confirm payee. Generic vendor names in QBO (Stripe Sales, Generic Meal Vendor, Generic Airfare Vendor) are expected placeholders. Do not flag them unless account is wrong. Not Profit First. Do not produce advisory or CFO-level commentary.',
+    defaultOI: [
+      { desc: 'Fidelity CC interest - reclassify to DPM Distributions (non-deductible)', amt: '$138.59', pri: 'URGENT' },
+      { desc: 'Personal insurance coded to 5360 - Mercury + Tesla x2 - reclassify', amt: '$686.49', pri: 'HIGH' },
+      { desc: 'Tesla Finance auto lease - two payments - confirm two vehicles and business use %', amt: '$1,251.65', pri: 'HIGH' },
+      { desc: 'Home utilities coded to 5840 - SoCalGas + IRWD - reclassify to DPM Distributions', amt: '$944.29', pri: 'HIGH' },
+      { desc: 'Hidden Canyon HOA coded to Occupancy - confirm home office or reclassify', amt: '$650.00', pri: 'HIGH' },
+      { desc: 'Hugo Boss + Le Labo coded to Marketing - reclassify to DPM Distributions', amt: '$323.85', pri: 'HIGH' },
+      { desc: 'Iberia Air 3 flights - confirm business purpose and documentation', amt: '$4,471.29', pri: 'HIGH' },
+      { desc: '4 new contractors - W-9 needed: Ann Prietos, Sania Khan, Omar Granelli, Jonierine Marcelo', amt: '$4,808.00', pri: 'MEDIUM' },
+      { desc: 'New payroll setup - verify employee name and Gusto W-2 configuration', amt: '$12,882.76', pri: 'MEDIUM' },
+      { desc: 'Fancy Bananas Inc (Dr. Mark Olson) - confirm entity type for 1099 determination', amt: '', pri: 'MEDIUM' },
+      { desc: 'Jacob Jenkins - no Feb activity - confirm if still active', amt: '', pri: 'LOW' },
+      { desc: 'Rinesh Ganatra Venmo $350 on 4/18/25 - recode from vendor Venmo to individual', amt: '$350.00', pri: 'MEDIUM' },
+      { desc: 'Stripe fee negotiation - ongoing advisory item', amt: '', pri: 'LOW' },
+      { desc: '2025 corrected 1096 transmittal - verify filing completed for 6 corrected forms', amt: '', pri: 'LOW' },
+    ]
+  }
+  ,
+  {
+    id: 'arron',
+    name: 'Arron Leadership Coaching',
+    entity: 'S-Corporation',
+    basis: 'Cash',
+    classes: '',
+    notes: 'Executive coaching and leadership advisory practice. Owner: Laurie Arron (Laurie Benezra Arron). S-Corp payroll via Gusto: ~$12,333/mo W-2 wages + $3,100/mo health insurance added to W-2 per IRS rules. Do not flag payroll structure or health insurance JEs. Book royalties (Amazon, Audible, LSI) typically under $200/mo combined - expected, no review needed. Monthly JEs for home office ($1,000) and Acura lease ($484.97) posted as LA-Contributions - standard recurring entries, do not flag. Shellpoint mortgage (~$9,994/mo) coded as owner distribution - expected. Watch for timing overdrafts (one occurred Sept 2025). Wise used for Digital Cupcake and UK vendor payments - code to actual payee not Wise. Digital Cupcake (~$601/mo) has historically been miscoded to Payroll Fees - verify correct coding to Advertising each month. Several subscriptions (Squarespace, GoDaddy, Flodesk, ChatGPT) charged to WF debit card ending 0201. Do not flag known recurring items unless amount is >25% outside normal range. Revenue concentration: Connected EC is the primary revenue source. Quarterly meeting cadence. Tier 3.',
+    defaultOI: []
+  },
+  {
+    id: 'eof',
+    name: 'Elite Ops Franchise',
+    entity: 'S-Corporation',
+    basis: 'Accrual',
+    classes: '',
+    notes: 'STATUS: SUPPORT PAUSED. Entity is dormant - no active revenue. Same owner as Elite Ops Exterminators (DJ Profit). EOF is the franchisor entity selling pest control franchise territories nationally. Services resume when first franchise territory is sold. Minimal overhead while dormant. EOE carries a $78,248 Elite Ops Franchise Investment asset on its balance sheet. Some EOF-related expenses may be coded to EOE while dormant - flag any franchise-related transactions seen in EOE reviews for proper entity allocation. No monthly review required until reactivation.',
+    defaultOI: [
+      { desc: 'JMD support paused - resume when first franchise territory sold', amt: '', pri: 'LOW' },
+      { desc: 'Confirm EOF has separate QBO file (or is it tracked within EOE?)', amt: '', pri: 'MEDIUM' },
+      { desc: 'Confirm state registrations are current for franchise offering', amt: '', pri: 'MEDIUM' },
+      { desc: 'Validate intercompany accounting - $78,248 franchise investment on EOE books needs proper offset on EOF side', amt: '$78,248.00', pri: 'MEDIUM' },
+    ]
+  },
+  {
+    id: 'above',
+    name: 'Above & LLC',
+    entity: 'LLC',
+    basis: 'Cash',
+    classes: '',
+    notes: 'Executive coaching and strategic advisory. Owners: Misty Reich (member) and Brian Reich (husband, executes transactions). Part of a 3-entity Personal CFO engagement reviewed together monthly (Above & LLC, Cascade Portfolio CPA, personal finances). Profit First client since Feb 2025. TAPs: Owner\'s Comp 62% (Relay 3017), Tax 20% (Relay 3018, plus $24K Wealthfront - verify balance), OpEx 10% (Relay 8778), Profit 8% (Relay 8783), Cash Reserve buffer (Relay 3749). Income Checking (Relay 8781) should be ~$0 after allocation - flag if materially above zero. PF deep dive is quarterly only. Five Houses Investment SL (~$35K quarterly via Wise) is a related entity owned by Misty/Brian - Spanish entity, no W-8 required. Negative GP in Five Houses quarters is expected - not an error. Cash Reserve pulls to cover Citi CC autopay in heavy months - by design, not a red flag. Misty is London-based; GBP CC charges are normal. Citi CC autopay creates one-month lag between charges and cash impact. Revenue via Connected EC paid in GBP via Wise. Distribution payee may show Misty Reich Ltd or Brian Reich - both correct. Do not flag known recurring items unless amount is >25% outside normal range.',
+    defaultOI: [
+      { desc: 'Wealthfront Tax Savings balance - verify still active and part of PF Tax Savings structure', amt: '$24,000.00', pri: 'MEDIUM' },
+    ]
+  },
+  {
+    id: 'glo',
+    name: 'GLO Architecture',
+    entity: 'S-Corporation',
+    basis: 'Cash',
+    classes: '',
+    notes: 'Architecture firm (multifamily, affordable housing, mixed-use). Owner: Kevin Nivinskus. Tier 1 Full Advisory - weekly meetings. Profit First client since Feb 2026 (new implementation). TAPs: Income pass-through (CB Income 1270, $2K floor), Consultant account pre-funded (CB Consultant 3557, $2K floor), Owner\'s Comp 40% (Owner Pay TBD - account being set up, $2K floor), Tax 5% (CB Tax Savings 6226, $2K floor), OpEx 54% (CB OPEX 3565, $2K floor), Profit 1% (CB Profit Savings 7063, $2K floor). All accounts maintain $2K floor. PF deep dive is monthly (Tier 1). Revenue is project-based and lumpy. Recurring CA income ~$15,267/mo from Wildomar (~$9,416/mo) and St. Lukes (~$5,851/mo). All other revenue is milestone-based. Personal expenses (Mission Federal mortgage $2,669/mo + $881/mo, Amazon, Instacart, Nordstrom, Apple, streaming, consumer purchases) run through business per client direction - do not reclassify without Kevin\'s approval. Kevin occasionally edits QBO directly - verify any client-side changes before reconciling. Payroll: Kevin takes owner draws; JMD books quarterly historical payroll of $15,000 via Gusto for W-2 wages. CC debt: Chase CC ~$35K at ~$920/mo interest, Hilton Amex ~$3.5K at ~$88/mo, Amex late fees $40/mo. Howard Avenue project net position approximately -$39K due to billing error - track invoices against correction credit. Josiah Nivinskus Zelle deposits $160/mo (reimbursements coded to 5840) - expected. BigO Services ($215/mo) handles IT/cybersecurity post-breach. Do not produce advisory or CFO-level commentary beyond Tier 1 deliverables.',
+    defaultOI: [
+      { desc: 'Set up Owner Pay bank account at Chase for PF distributions', amt: '', pri: 'URGENT' },
+      { desc: 'Execute first full PF allocation per calculator', amt: '', pri: 'URGENT' },
+      { desc: 'Hilton Amex late fee $40/mo recurring - set up autopay or pay before due date', amt: '$40.00', pri: 'HIGH' },
+      { desc: 'Apple Store subscriptions - confirm which are active and total monthly amount (multiple charges)', amt: '', pri: 'HIGH' },
+      { desc: 'Bradford Online variance - $113.73 typical but $137.74 appeared. Confirm expected amount.', amt: '', pri: 'MEDIUM' },
+      { desc: 'Establish quarterly estimated tax payment amount - Tax Savings account now building', amt: '', pri: 'MEDIUM' },
+      { desc: 'Google TV subscription $3.99/mo on Hilton Amex - confirm business or personal', amt: '$3.99', pri: 'LOW' },
+      { desc: 'SEP-IRA contribution strategy - defer until cash position stabilizes', amt: '', pri: 'LOW' },
+    ]
+  },
+  {
+    id: 'hivery',
+    name: 'The Hivery LLC',
+    entity: 'S-Corporation',
+    basis: 'Cash',
+    classes: '',
+    notes: 'Membership-based coworking space. Owner: Grace Kraaijvanger. Tier 3, quarterly meetings. Profit First not yet implemented (planning 2026 - blocked by $68K BofA CC balance). Revenue flows through Kajabi/Stripe (memberships and events, deposited as "On behalf of Kaj" ACH) and Square POS (daily retail/cafe deposits). Multiple membership tiers tracked in sub-accounts under 4100: M2M Flex (4110), M2M Unlimited (4115), 6-Month Flex (4120), 6-Month Unlimited (4125), VIP Promo (4130), Day Pass (4135), Refunds (4990). Validate membership totals against Kajabi each month. Incubator program (4500) drives large revenue spikes in enrollment months (Jan/Fall) - $15K-$25K+ expected, $0 in non-enrollment months. This is NOT a red flag. BofA MC carrying ~$68K balance with ~$1,000/mo interest - largest profitability drag, client is aware. Kajabi "On behalf of Kaj" deposits are fee settlements, not additional revenue - do not double count as income. Stripe fees flow through Stripe Kajabi Clearing account - multiple small daily transactions are normal. Some early Square POS deposits may auto-match to Squarespace vendor in QBO - correct if found. Two loans on balance sheet: Loan M. Kurtzig ($21,800) and Due To/From Grace K. ($23,000) - status and repayment unknown. BofA cash back rewards (~$125-188/mo) coded to 7020 Other Income - correct treatment. Do not flag known recurring items unless amount is >25% outside normal range.',
+    defaultOI: [
+      { desc: 'BofA MC ~$68K balance with ~$1,000/mo interest (~$12K/yr). Paydown strategy needed before PF implementation.', amt: '$1,053.68', pri: 'HIGH' },
+      { desc: 'Loan M. Kurtzig ($21,800) and Due To/From Grace K. ($23,000) - confirm status, repayment terms, and payment activity', amt: '$44,800.00', pri: 'MEDIUM' },
+      { desc: 'Willow Camp PR $1,099 on 12/18 - one-time or recurring? Confirm PR/marketing engagement.', amt: '$1,099.00', pri: 'MEDIUM' },
+      { desc: 'Westwood Rose $2,000 on 12/9 - confirm purpose. Large charge coded to Advertising.', amt: '$2,000.00', pri: 'MEDIUM' },
+      { desc: 'Nordstrom $150.00 on 12/24 coded to Office Supplies - confirm business purpose or reclassify', amt: '$150.00', pri: 'LOW' },
+      { desc: 'Ross $116.88 on 12/18 coded to Office Supplies - confirm business purpose (workspace decor?) or reclassify', amt: '$116.88', pri: 'LOW' },
+      { desc: 'Vitality Bowls $12.00 on 12/22 coded to Advertising - confirm event-related or reclassify to meals', amt: '$12.00', pri: 'LOW' },
+    ]
+  },
+  {
+    id: 'spirit',
+    name: 'Spirit Pharmacist',
+    entity: 'LLC (S-Corp election)',
+    basis: 'Cash',
+    classes: '',
+    notes: 'Online education company in psychedelic psychopharmacology. Owner: Ben Malcolm (primary operator). Two active shareholder equity accounts: BM (Ben Malcolm) and SMG. Five revenue streams: Membership ($99/mo or $999/yr via Kajabi and PayPal, 47% of 2025 gross), Mastermind (premium cohort, ~$103K in 2025, quarterly launches), Courses (Kajabi self-paced), Consulting ($100-300/session via Calendly), Lecture (smallest). Refunds coded to 4700. Profit First client since July 2022. TAPs: Owner Pay 45% (WF 0077), OpEx 30% (WF 0069), Tax 17% (WF 0168), Profit 8% (WF 6578 - 70% reserve / 30% Future Growth Fund for property). OpEx Reserve buffer (WF 0366). Income Checking (WF 7260) should be ~$0 after each 10th/25th allocation. JMD fee ($697) debits from Income Checking 7260 BEFORE PF allocation - this is expected, not an error. Revenue flows: Kajabi to Stripe to Kajabi Clearing, weekly sweep to WF Income. PayPal collects separately and sweeps periodically. Myla is a W-2 employee ($6,500/yr 2025 - confirm 2026 status). Ben also runs Costa Rica property development - Norlan Munguia (~$5,591/mo) and Arad Segal (~$6,386/mo) are international wires to Costa Rica for construction - no 1099 required. Each wire incurs $25 WF fee. Robinhood Brokerage (~$75K) is earmarked for Costa Rica construction - NOT operating reserves. Robinhood Savings/LPL are retirement - not PF reserve targets. PF deep dive is quarterly. Tier 3.',
+    defaultOI: [
+      { desc: '2025 tax return status - confirm filing timeline and estimated 2026 payments with CPA John Hopkins', amt: '', pri: 'HIGH' },
+      { desc: 'Myla employment status - confirm 2026 pay schedule and current wages', amt: '', pri: 'MEDIUM' },
+      { desc: 'Norlan Munguia and Arad Segal - confirm scope, frequency, and project allocation for Costa Rica payments', amt: '', pri: 'MEDIUM' },
+      { desc: 'Retirement contribution plan for 2026 - confirm LPL/Robinhood target amounts and timing', amt: '', pri: 'MEDIUM' },
+      { desc: 'Google One ($1.99/mo) - confirm business or personal', amt: '$1.99', pri: 'LOW' },
+      { desc: 'Sfera Legal fee $1,073.50 paid from Owner Pay 0077 - confirm if this should be OpEx', amt: '$1,073.50', pri: 'LOW' },
+    ]
+  },
+  {
+    id: 'holland',
+    name: 'Holland Communications',
+    entity: 'S-Corporation',
+    basis: 'Cash',
+    classes: '',
+    notes: 'Executive coaching, leadership development, and communications consulting. Owner: Andrea Holland (sole shareholder, W-2 employee). Also operates under DBA Andrea Holland Coaching in QuickBooks. Tier 2 Moderate Advisory, monthly meetings. Profit First client since 2024, completed PFQ8 in 2025. TAPs: Profit 5% (CB 2521), Owner\'s Comp 40% (CB 7999), Tax 15% (CB 2513 - NY State PTE tax also paid from here), OpEx 40% (CB 7981). Income Checking (CB 7973) retains $500 buffer after allocation. Contractor pre-allocation before TAPs: iBoss/Lenica Stevens (~$2,000/mo CC auto-charge) and Angela Parris/Nikki (~$1,000/mo via Gusto) are deducted from gross revenue BEFORE TAP percentages are applied. Formula: Income Balance minus $500 buffer minus contractor funding = allocable revenue. Andrea W-2 payroll: ~$2,428 net twice monthly (15th and last day) from Owner Pay 7999. JMD fee: $997/mo discounted, returns to $1,597/mo approximately April 2026. Rush Digital ($1,950/mo) and ActiveCampaign (~$825/mo) are largest marketing expenses. Do not flag known recurring items unless amount is >25% outside normal range.',
+    defaultOI: [
+      { desc: 'Begin Debt Phase 1 - increase payments $384 to $700/mo starting March', amt: '', pri: 'URGENT' },
+      { desc: 'Collect outstanding AR $19,407 - Starbridge $7,407 is priority chase (61-90 days)', amt: '$19,407.00', pri: 'HIGH' },
+      { desc: 'JMD fee increase - currently $997, returns to $1,597 approximately April 2026', amt: '', pri: 'MEDIUM' },
+      { desc: 'Confirm contractor funding accounts - Lenica (CC auto) and Nikki (Gusto). Which PF account funds each?', amt: '', pri: 'MEDIUM' },
+      { desc: 'Build SOPs: HC-FIN-001 (Weekly Cash Req) and HC-FIN-002 (Monthly PF Allocation)', amt: '', pri: 'MEDIUM' },
+      { desc: 'Spotify $19.99/mo coded as Office Supplies - confirm business or personal', amt: '$19.99', pri: 'LOW' },
+      { desc: 'Google One $0.53/mo - confirm business or personal', amt: '$0.53', pri: 'LOW' },
+    ]
+  },
+  {
+    id: 'eoe',
+    name: 'Elite Ops Exterminators',
+    entity: 'S-Corporation',
+    basis: 'Accrual',
+    classes: '',
+    notes: 'Pest control company, residential and commercial, DC/MD/VA market. Owner: DJ Profit. Tier 1 Full Advisory, monthly meetings. Profit First client since Jan 2026, bi-monthly allocations (10th and 25th). Real Revenue formula: Total Income minus Materials and Subs minus H.E.R.O. Wages. TAPs applied to Real Revenue only. TAPs: Income pass-through (Truist 1803), Profit 5% (Truist 1811), Owner Pay 15% (Truist 1852), Tax 10% (Truist 1829), Operating 70% (Truist 1849), Payroll flat $20,800/allocation (Truist 1845). Fixed bi-monthly amounts: H.E.R.O. wages $11,355, DJ wages $4,245 (carved from Owner Pay), Natalia + payroll taxes $5,200 (carved from OpEx), OpEx buffer $5,000. DJ owner draw $4,440.50 per allocation ($8,881/mo) from Owner Pay to personal. DJ comp structure (W-2 salary via Gusto, distributions) is deliberate 199A QBI tax strategy managed by CPA John Hopkins - do NOT flag. Revenue invoiced via Jobber as "Elite Monthly Jobber Billing" - two invoices per month (1st and 31st). Revenue splits by geography (DC, MD, VA) and type (Recurring vs. One-Off). Recurring ~79% of total. Seasonal: Q1 is slowest, ramps spring/summer. Payroll AJE (04. Payroll AJE) carves out DJ salary to 5810 and Natalia to 5812 from H.E.R.O. Wages - expected and correct, not a miscoding. Fleet of 5+ vehicles - fuel, tolls (Drive EZ ~$1,400-2,100/mo), insurance, loans are normal costs. Accrual basis. Related entity: EOF franchise (separate entity, paused). Do not flag known recurring items unless amount is >25% outside normal range.',
+    defaultOI: [
+      { desc: 'VAULT account setup (Relay) - target $180,556 (3 months OpEx). DJ must open account.', amt: '$180,556.00', pri: 'HIGH' },
+      { desc: 'SEP-IRA setup - max $22,965. Graduated funding schedule ready. Pending account setup.', amt: '$22,965.00', pri: 'HIGH' },
+      { desc: 'Hire additional H.E.R.O. technician - budgeted in payroll at $11,355 bi-monthly', amt: '', pri: 'HIGH' },
+      { desc: 'S-Corp reasonable comp confirmation - CPA John to validate 2026 salary level', amt: '', pri: 'HIGH' },
+      { desc: 'Feb 25th allocation shortfall - $8,459 negative balance. Monitor cash flow.', amt: '$8,459.00', pri: 'HIGH' },
+      { desc: 'Account swap in QBO - 1829 Tax and 1852 Owner Pay labels need correction', amt: '', pri: 'MEDIUM' },
+      { desc: 'SUTA rate monitoring - DC unemployment rate elevated ($1,882 in Jan). Review quarterly.', amt: '', pri: 'MEDIUM' },
+      { desc: 'VA Dept of Taxation $322 posted from Owner Pay instead of Tax - needs JE correction', amt: '$322.00', pri: 'MEDIUM' },
+    ]
+  },
+  {
+    id: 'slater',
+    name: 'Slater Interior Design',
+    entity: 'LLC (S-Corp election)',
+    basis: 'Cash',
+    classes: '',
+    notes: 'Interior design services and product resale. DBA: Well-Designed Home. Owner: Melinda Slater (sole member/shareholder, sole W-2 employee). Tier 2 Moderate Advisory, monthly meetings. Profit First client since April 2022. TAPs: Owner\'s Pay 35% (BECU 2652), OpEx 50% (BECU 2678), Tax 10% (BECU 2587), Profit 5% (BECU 2503 + First Fed 2967 for higher yield), Reserve buffer (BECU 2579), Subs and Materials holding (BECU 9778). Income Checking (BECU 9283) allocates to ~$0 with $500 buffer. WA State treats entity as LLC not S-Corp for payroll tax - PFML and WA Cares exemptions filed, saving ~$603/yr. Revenue is project-based and lumpy ($8K-$30K+/mo services). Product resale is sporadic - some months $0 in product/shipping income, normal. QB Payments processing fees deduct daily from BECU 9283 - small daily charges ($2-$21), expected. Personal expenses (fuel, pet supplies, groceries, personal subscriptions) coded to Distributions throughout the month - correct, do not flag. Alaska CC revolving (~$9K balance, ~$71/mo interest) - paydown in progress. BECU Visa CC has ~$9.6K balance. Subcontractor costs vary widely ($0 to $4K+ monthly) based on active projects - project-driven, not a trend concern. Annual design trade show (Vegas/Market) late January - expect travel/hotel/meals cluster, legitimate business expense. Gusto payroll debits from Owner Pay (BECU 2652) not OpEx. Melinda W-2: $3,625/mo. Standard Insurance: 2-3 separate debits per month (multiple policies) - normal. PF deep dive quarterly. Do not flag known recurring items unless amount is >25% outside normal range.',
+    defaultOI: [
+      { desc: 'HSA contributions ($10,100 to Optum Bank) - verify S-Corp 2% shareholder treatment with CPA. Payroll vs. Distributions?', amt: '$10,100.00', pri: 'MEDIUM' },
+      { desc: 'BECU Visa CC balance increase ($9,632) - confirm nature of charges (business vs. personal debt payoff)', amt: '$9,632.00', pri: 'MEDIUM' },
+      { desc: 'Alaska CC interest ($71.22/mo) - non-deductible if personal card. Confirm card classification. Review quarterly.', amt: '$71.22', pri: 'LOW' },
+      { desc: 'Multiple deleted bank accounts in QBO (10+ legacy accounts showing $0) - recommend cleanup/merge. Low urgency.', amt: '', pri: 'LOW' },
+    ]
+  },
+  {
+    id: 'aai',
+    name: 'Atlas Adventures International',
+    entity: 'Sole Proprietorship',
+    basis: 'Cash',
+    classes: '',
+    notes: 'Luxury women-only group travel and individual travel planning. Owner: Whitney Haldeman (London-based, US citizen). Two business lines in one QBO file: Atlas Adventures International (AAI, group travel, 94% of 2025 revenue, account 4200) and Blonde Atlas (individual travel planning, account 4210). Affiliate income in 4220 (Embark Lifestyle ~$5,595/mo, Netilum small amounts). Tier 1 Full Advisory, monthly meetings. Profit First on hold - cash position impacted by ~$490K hotel prepayments made in late 2025 for 2026 trips. Wise is primary banking platform with multiple currency accounts (USD 6308 is main operating account). AMEX Business CC (ending 1006) is primary card, balance $123,201 as of 1/31/26. US tax: sole proprietor, foreign earned income exclusion applies. UK: quarterly VAT returns under Tour Operators Margin Scheme (TOMS). HTJ.Tax (Derren and Weldon) handle all tax filings. GBP contractors (Jessica Henderson, Amy Lewis, Lucy Hubbard) paid via Wise internationally - no 1099 required. US contractors via Gusto for 1099 tracking. Stripe Clearing account (1040) should net to zero after reconciliation - active balance indicates unmatched deposits/fees. Cash Clearing account (1030) tracks Whitney\'s personal CC reimbursements - negative balance means business owes Whitney. Revenue accounts: 4200 AAI Group Travel, 4210 Blonde Atlas ITP, 4220 Affiliate Income. Distributions tracked under 3390 WH-Distributions. JMD fees $2,500/mo (pricing realignment in progress - does not reflect Tier 1 scope). Do not flag known recurring items unless amount is >25% outside normal range.',
+    defaultOI: [
+      { desc: 'Unapplied Cash Bill Payment Expense $5,819.72 (Gusto 2/6/2026) - needs matching to contractor bills', amt: '$5,819.72', pri: 'HIGH' },
+      { desc: 'JMD fee pricing realignment - $2,500/mo does not reflect Tier 1 scope being delivered', amt: '', pri: 'HIGH' },
+      { desc: 'Stripe Clearing 1040 balance $21,402.87 - should net to zero. Reconcile unmatched deposits/fees.', amt: '$21,402.87', pri: 'MEDIUM' },
+      { desc: 'Cash Clearing 1030 balance ($1,034) negative - business owes Whitney for personal CC charges. Reimburse or reclassify.', amt: '$1,034.00', pri: 'MEDIUM' },
+      { desc: 'Profit First implementation on hold due to $490K hotel prepayments. Resume when cash position stabilizes.', amt: '', pri: 'MEDIUM' },
+      { desc: '1011 N Stafford St Arlington ($575.57 in 9999 Client to Advise + $1,017.81 in 5130 Meals) - confirm purpose', amt: '$1,593.38', pri: 'MEDIUM' },
+      { desc: '3173 RB Income account has $1,050 balance - verify purpose and clear', amt: '$1,050.00', pri: 'LOW' },
+      { desc: 'Airalo $4.50 coded to 9999 Client to Advise - confirm business or personal', amt: '$4.50', pri: 'LOW' },
+    ]
+  },
+  {
+    id: 'vi',
+    name: 'Vivid Imagination',
+    entity: 'S-Corporation',
+    basis: 'Cash',
+    classes: '',
+    notes: 'EdTech company - VR, drone, and technology programs for K-12 schools. Owner: Branden Baskin (CEO, W-2 at $100K S-Corp reasonable comp). Three revenue lines in one QBO file: School Programs (VR Tech and Esports, primary), Drone Product Sales (early stage, inventory from Oriental Navigation Technology), Private Events (early stage, van purchased Q4 2025). 2025 revenue $1,076,510 (+206% YoY). CFO-Level Advisory, expanding in 2026 to include invoicing, AR, and collections. Bi-weekly meetings transitioning to monthly financial + monthly Kelly ops. Profit First planned Q2 2026. Payroll semi-monthly: Cycle 1 (15th) = all coaches + Erika Bayh; Cycle 2 (EOM) = Nicolette Calandra, JMD, Simplification Services. Branden W-2 payroll currently SKIPPED in Gusto per S-Corp salary setup - handled separately. Non-Gusto payments (Zelle, Cash App, PayPal, Western Union, Apple Cash) require historical Gusto entry for 1099 tracking. ~30 active coach contractors submit invoices via Hubdoc; JMD reviews, enters bills in QBO, and compares against Gusto before processing. Sharzer Associates (Danielle Scire) earns 20% commissions paid the month AFTER the school pays the invoice - not when signed. JMD manages Sharzer correspondence directly. Elaine Porcher earns 10% commission added to W-2. Revenue timing: May-June are primary collection months (end of school year). 90-day AR cycle is typical. Q1 and Q4 are lower cash flow periods - summer budget must be built from spring revenue. Prepaid contracts go to unearned revenue; process being established with Kelly. Entity separation under active discussion. Do not flag known recurring items unless amount is >25% outside normal range.',
+    defaultOI: [
+      { desc: 'Ghana expansion outline - define revenue line classification. Pending Branden input.', amt: '', pri: 'HIGH' },
+      { desc: 'Nova LLC formation - confirm legal structure and status. Pending Branden.', amt: '', pri: 'HIGH' },
+      { desc: 'Year-end report finalization - confirm anything still needed for CPA John', amt: '', pri: 'HIGH' },
+      { desc: 'Prepaid contract identification with Kelly - establish unearned revenue process', amt: '', pri: 'MEDIUM' },
+    ]
+  }
+  {
+    id: 'arron',
+    name: 'Arron Leadership Coaching',
+    entity: 'S-Corporation',
+    basis: 'Cash',
+    classes: '',
+    notes: 'Executive coaching and leadership advisory. Owner Laurie Arron (Laurie Benezra Arron), sole owner. Revenue is lumpy from Connected EC (primary client, multiple deposits/month, largest source by far) plus coaching clients Justin Ailes and Catherine Tramuto-Tobin (installment-based, paid via QBO Payments) and small book royalties (Amazon/Audible/LSI, under $200/mo combined, coded to Book Sale Revenue). S-Corp payroll: Laurie takes W-2 salary ~$12,333/mo through Gusto; health insurance $3,100/mo added to W-2 wages per IRS rules with offsetting JE -- standard S-Corp treatment, do not flag. Owner equity sub-accounts: LA-Equity tracks Contributions, Distributions, Investments, Tax Paid. Year-start JEs reset prior-year balances to Retained Earnings -- normal. Monthly JEs for home office ($1,000/mo) and Acura lease ($484.97/mo) are standard recurring entries (debit expense, credit LA-Contributions) -- do not flag. Shellpoint mortgage (~$9,994/mo) coded as owner distribution from WF Income account; watch for timing issues that cause low or negative balances. The Digital Cupcake (~$601/mo, social media management) paid via Wise -- verify coding to Advertising & Promotions every month (known history of miscoding to Payroll Fees). Wise transactions show as "Wise US Inc" or "BUSINESS TO BUSINESS ACH Wise Inc" -- use memo to identify actual payee. Zika / Zika 2 LLC transfers are owner distributions (related Seattle real estate entity) -- do not flag. Debit card subscriptions (Squarespace, GoDaddy, Flodesk, ChatGPT ~$21) charged to WF debit card 0201 -- normal. Note: P&L Detail is not available for this client. Use Transaction Detail by Account as the primary data source. CPA is Valerie.',
+    defaultOI: []
+  },
+  {
+    id: 'eof',
+    name: 'Elite Ops Franchise',
+    entity: 'S-Corporation',
+    basis: 'Accrual',
+    classes: '',
+    notes: 'STATUS: PAUSED -- entity dormant, no active revenue. JMD support paused effective February 2026. Do not produce monthly close deliverables until reactivated. Resume services when first franchise territory is sold. EOF is the franchisor entity for the Elite Ops pest control brand nationally. Same owner as EOE (Darrell DJ Profit). EOE carries $78,248 Elite Ops Franchise Investment asset on its balance sheet. Franchise payments from EOE held at $0 since 2024 -- not forgiven, not accruing. If EOF-related expenses appear on EOE books (LegalZoom, Squarespace, Corporate Filings LLC), flag for entity allocation to protect both P&Ls. Business model: sells pest control franchise territories (2 weeks training, exclusive territory, ongoing support, military/veteran focus). When reactivated, expect new vendors for FDD legal counsel, franchise marketing, broker commissions, and franchisee onboarding. Intercompany accounting between EOE and EOF will need to be established at reactivation.',
+    defaultOI: [
+      { desc: 'JMD support paused -- resume when first franchise sold', amt: '', pri: 'LOW' },
+      { desc: 'Confirm EOF has separate QBO file (vs. tracked within EOE)', amt: '', pri: 'MEDIUM' },
+      { desc: 'Confirm state registrations current for franchise offering', amt: '', pri: 'MEDIUM' },
+      { desc: 'Intercompany accounting -- $78,248 franchise investment on EOE needs proper offset on EOF', amt: '$78,248', pri: 'MEDIUM' }
+    ]
+  },
+  {
+    id: 'above',
+    name: 'Above & LLC',
+    entity: 'LLC',
+    basis: 'Cash',
+    classes: '',
+    notes: 'Executive coaching/strategic advisory. Owners Misty Reich and Brian Reich (married); Brian executes transactions, distributions are Misty\'s member equity. Profit First client, certified, active since Feb 2025. Multi-entity Personal CFO engagement: Above & LLC (this profile), Cascade Portfolio CPA (Brian\'s company, separate profile), and personal finances -- all reviewed in one monthly meeting. TAPs: Owner\'s Comp 62% (Relay 3017), Tax 20% (Relay 3018 -- also $24K in Wealthfront, verify still active and part of PF Tax structure), OpEx 10% (Relay 8778), Profit 8% (Relay 8783). Income Checking Relay 8781 should be ~$0 after allocation; any material balance means allocation was missed. Cash Reserve Relay 3749 pulls to cover heavy OpEx months -- by design, not an error. Key contractor: Five Houses Investment SL (Misty/Brian related entity, Spanish SL) -- ~$35K quarterly via Wise, no W-8 required, creates negative gross profit in quarters it hits -- expected, not a red flag. Connected EC is key consulting client, pays via Wise in GBP; revenue deposits to Wise USD. GBP charges on Citi business card are normal (Misty is London-based). Citi CC autopay clears prior month\'s balance from OpEx -- one-month lag is expected. PF deep dive is quarterly only; monthly review does not include PF analysis unless something looks off. Income Checking at $0.11 is correct -- means PF allocation executed properly. Distribution structure: Misty is the member; Brian often initiates payments; payee may show Misty Reich Ltd or Brian Reich -- both correct.',
+    defaultOI: [
+      { desc: 'Wealthfront Tax Savings balance -- verify still active and part of PF Tax structure', amt: '$24,000', pri: 'MEDIUM' }
+    ]
+  },
+  {
+    id: 'glo',
+    name: 'GLO Architecture',
+    entity: 'S-Corporation',
+    basis: 'Cash',
+    classes: '',
+    notes: 'Architecture firm, multifamily/affordable housing/mixed-use, Southern California market. Owner Kevin Nivinskus, sole shareholder. Tier 1 Full Advisory -- heavy deliverables including project tracking workbooks, cash flow forecasts, PF dashboards, and per-project financials every month. Profit First client, newly implemented February 2026, not yet fully operational. Transitional TAPs: Income pass-through (CB Income 1270, $2K floor), Consultant account funds subcontractors before TAP split (CB Consultant 3557), Owner\'s Comp 40% (Chase Owner Pay account -- pending setup), Tax 5% (CB Tax Savings 6226), OpEx 54% (CB OPEX 3565), Profit 1% (CB Profit Savings 7063). All accounts maintain $2,000 minimum floor that is never counted as available. Monthly PF allocation on the 10th. Revenue is project-based and lumpy. Recurring baseline ~$15,267/mo (Wildomar $9,416/mo CA phase + St. Lukes $5,851/mo CA phase). Monthly cash need ~$25K+ -- flag any month with no milestone payments. Kevin runs personal expenses through the business (mortgage $2,669 + $881 = $3,550/mo, Amazon, Instacart, Nordstrom, Apple Store, streaming, Wayfair, etc.) per client direction -- do not reclassify without approval, document per JMD standards. Quarterly payroll structure: Kevin takes draws throughout the month; JMD books $15,000 historical Gusto payroll quarterly to create W-2 wages. CC debt: Chase #1525 ~$35K (interest ~$920/mo), Hilton Amex ~$3,500 (interest ~$88/mo, late fee $40/mo recurring). Howard Ave project underwater (~negative $39K net position due to $60,487.50 billing error) -- track invoices against correction credit carefully. Kevin occasionally edits QBO directly -- verify before reconciling. BigO Services ($215/mo) handles IT/cybersecurity (data breach Jan 2026, resolved). Josiah Nivinskus Zelle deposits $160/mo are reimbursements coded to 5840 -- expected. Biscred.com $4,250 credit in Jan 2026 was refund/cancellation -- flag if it recurs.',
+    defaultOI: [
+      { desc: 'Owner Pay Chase account setup required for PF distributions', amt: '', pri: 'URGENT' },
+      { desc: 'Execute first full PF allocation per calculator', amt: '', pri: 'URGENT' },
+      { desc: 'Hilton Amex late fee $40/mo recurring -- set up autopay or manual payment before due date', amt: '$40.00', pri: 'HIGH' },
+      { desc: 'Apple Store subscriptions -- confirm which are active and total monthly amount (8+ charges)', amt: '', pri: 'HIGH' },
+      { desc: 'Bradford Online variance -- $113.73 typical, $137.74 appeared previously -- confirm expected amount', amt: '$137.74', pri: 'MEDIUM' },
+      { desc: 'Establish quarterly estimated tax payment amount -- Tax Savings account now building', amt: '', pri: 'MEDIUM' },
+      { desc: 'Google TV subscription $3.99/mo on Hilton Amex -- confirm business or personal', amt: '$3.99', pri: 'LOW' },
+      { desc: 'SEP-IRA strategy deferred until cash position stabilizes', amt: '', pri: 'LOW' }
+    ]
+  },
+  {
+    id: 'hivery',
+    name: 'The Hivery LLC',
+    entity: 'S-Corporation',
+    basis: 'Cash',
+    classes: '',
+    notes: 'Membership-based coworking space. Owner Grace Kraaijvanger, sole owner/operator. Revenue flows through two channels: Kajabi/Stripe (membership and event payments, deposited as "On behalf of Kaj" ACH to checking) and Square POS (retail/cafe sales, daily small deposits). Multiple membership tiers in QBO sub-accounts: M2M Flex $150/mo (4110), M2M Unlimited $250-325 (4115), 6-Month Flex $750 (4120), 6-Month Unlimited $1,250 (4125), VIP Promo $995 one-time (4130), Day Passes $40-200 (4135), Refunds (4990). Incubator program (4500) creates large revenue spikes in enrollment months ($15K-$25K+) -- currently Jan/Winter, likely also Fall. $0 Incubator in non-enrollment months is normal. Kajabi "On behalf of Kaj" ACH deposits are NOT revenue -- they are Stripe/Kajabi fee settlements already netted in clearing; do not double-count as income. Square POS deposits may auto-match to "Squarespace" vendor in QBO -- correct to Square Inc in Product Income 4700. Not yet a PF client, planning 2026 implementation. Rent $9,100/mo (WTB Partners, paid by check). BofA MC carrying ~$68K balance with ~$1,000/mo interest -- largest drag on profitability; must be addressed before PF rollout. Payroll via Gusto bi-weekly (~$3-4K wages + ~$1K taxes per cycle). Loans on balance sheet: M. Kurtzig ($21,800) and Due To/From Grace K. ($23,000) -- terms and repayment unconfirmed. Negative equity (~-$78K) is cumulative from startup years -- trajectory improving. BofA cash back rewards (~$125-188/mo) deposited to checking, coded to 7020 Other Income -- correct. CC interest coded to 7510.',
+    defaultOI: [
+      { desc: 'BofA MC ~$68K balance with ~$1,000/mo interest -- paydown strategy needed before PF implementation', amt: '$1,053.68', pri: 'HIGH' },
+      { desc: 'Loan M. Kurtzig ($21,800) and Due To/From Grace K. ($23,000) -- confirm terms and repayment status', amt: '$44,800', pri: 'MEDIUM' },
+      { desc: 'Westwood Rose $2,000 on 12/9 -- confirm purpose (coded to Advertising)', amt: '$2,000.00', pri: 'MEDIUM' },
+      { desc: 'Willow Camp PR $1,099 on 12/18 -- one-time or recurring? Confirm PR/marketing engagement', amt: '$1,099.00', pri: 'MEDIUM' },
+      { desc: 'Nordstrom $150 on 12/24 coded to Office Supplies -- confirm business purpose or reclassify', amt: '$150.00', pri: 'LOW' },
+      { desc: 'Ross $116.88 on 12/18 coded to Office Supplies -- confirm business purpose (workspace decor?)', amt: '$116.88', pri: 'LOW' },
+      { desc: 'Vitality Bowls $12.00 on 12/22 coded to Advertising -- confirm event-related or reclassify to meals', amt: '$12.00', pri: 'LOW' }
+    ]
+  },
+  {
+    id: 'spirit',
+    name: 'Spirit Pharmacist LLC',
+    entity: 'LLC (S-Corp election)',
+    basis: 'Cash',
+    classes: '',
+    notes: 'Online psychedelic psychopharmacology education company. Owner Ben Malcolm. Two active shareholder equity accounts: BM (Ben Malcolm) and SMG -- both active. Revenue streams in order of size: Membership (monthly $99, annual $999, healthcare student $20-79 -- via Kajabi and PayPal -- highest volume, most recurring), Mastermind (premium cohort, ~$103K in 2025, quarterly launches), Course sales (Kajabi), Consulting ($100-300/session via Calendly/Kajabi/PayPal), Lecture/speaking (smallest). Profit First client since July 2022. TAPs: Owner Pay 45% (WF 0077), OpEx 30% (WF 0069), Tax 17% (WF 0168), Profit 8% (WF 6578 -- 70% Profit Reserve, 30% Future Growth Fund). Income Checking WF 7260 allocates twice monthly (10th and 25th) to ~$0. JMD fee $697 debits from Income Checking 7260 before PF allocation -- established pattern, not an error. Kajabi clears to WF Income Checking weekly; PayPal sweeps periodically. Merchant fees netted at source. Robinhood Savings (~$31.6K, SEP IRA/retirement) and Robinhood Brokerage (~$75K, Costa Rica construction earmark) are NOT operating reserves. Ben is developing a Costa Rica property (Homestay Retreat). International wires to Norlan Munguia and Arad Segal (Costa Rica contractors) from OpEx Checking -- no 1099 required; $25 WF wire fee each. January and quarter-ends are heavy retirement contribution months (LPL + Robinhood ETF buys) -- large lumpy retirement expense is expected, not a trend concern. Refund rate ~8-9% of gross some months -- watch for elevated trends (2025 annual was 4.0%). Employee Myla ~$6,500/yr -- confirm 2026 status. CPA John Hopkins handles tax strategy and salary/distribution. PF deep dive quarterly only. Do not produce advisory commentary.',
+    defaultOI: [
+      { desc: '2025 tax return -- confirm filing timeline and estimated 2026 payments with CPA John Hopkins', amt: '', pri: 'HIGH' },
+      { desc: 'Myla employment status -- confirm 2026 pay schedule and current wages', amt: '', pri: 'MEDIUM' },
+      { desc: 'Norlan Munguia and Arad Segal (Costa Rica) -- confirm scope, frequency, project allocation', amt: '', pri: 'MEDIUM' },
+      { desc: '2026 retirement contribution plan -- confirm LPL and Robinhood target amounts and timing', amt: '', pri: 'MEDIUM' },
+      { desc: 'Sfera Legal fee paid from Owner Pay 0077 -- confirm if should be OpEx instead', amt: '', pri: 'LOW' },
+      { desc: 'Google One $1.99/mo -- confirm business or personal', amt: '$1.99', pri: 'LOW' }
+    ]
+  },
+  {
+    id: 'holland',
+    name: 'Holland Communications LLC',
+    entity: 'S-Corporation',
+    basis: 'Cash',
+    classes: '',
+    notes: 'Executive coaching, leadership development, communications consulting. Owner Andrea Holland, sole shareholder. QBO name is "Andrea Holland Coaching" (same entity, different name in QuickBooks). Profit First client, active since 2024, completed PFQ8 in 2025. TAPs: Profit 5% (CB 2521), Owner\'s Comp 40% (CB 7999), Tax 15% (CB 2513), OpEx 40% (CB 7981). Income Checking CB 7973 retains $500 buffer after allocation. Contractor pre-allocation BEFORE TAPs: iBoss/Lenica Stevens (~$2,000/mo CC auto-charge, operations support) and Nikki/Angela Parris (~$1,000/mo via Gusto, coaching support) are funded from gross revenue first. Formula: Income Balance - $500 buffer - contractor funding = allocable revenue; TAPs apply to allocable revenue only. Andrea\'s W-2 salary (~$2,428 net twice monthly on 15th and last day) paid from Owner Pay 7999, NOT from OpEx. Payroll taxes and fees come from OpEx 7981 -- do not mix these up. Revenue is lumpy: coaching invoices batch (e.g., University of Rochester sends multiple invoices at once) -- not a red flag. Rochester, NY based; local vendors (Greenlight Networks, Rochester Chamber, Stacy K Floral) are normal. NY State PTE tax ~$1,000 in December -- recurring annual obligation paid from Tax Savings. Three active debts all growing at minimums: Citi 6918 (~$8,411 at 28% APR, $86/mo min), CN Bank CC 1137 (~$9,246 at 28% APR, $118.01/mo min), CN Bank LOC 2313 (~$31,749 at 9% APR, $180/mo min). Debt reduction plan in place. Rush Digital $1,950/mo digital marketing on Delta AMEX. ActiveCampaign $825/mo email marketing. Ensure P&L exports are on Cash Basis every month (January 2026 was accidentally exported Accrual). JMD fee currently $997 (discounted), returning to $1,597 approx April 2026. Do not produce advisory commentary.',
+    defaultOI: [
+      { desc: 'Debt Phase 1 -- increase payments from $384 to $700/mo starting March', amt: '', pri: 'URGENT' },
+      { desc: 'Collect outstanding AR $19,407 -- Starbridge $7,407 is priority (61-90 days)', amt: '$19,407', pri: 'HIGH' },
+      { desc: 'JMD fee returning to $1,597 targeting approximately April 2026', amt: '$1,597', pri: 'MEDIUM' },
+      { desc: 'Confirm contractor PF funding accounts -- Lenica (CC auto) and Nikki (Gusto) -- which account funds each?', amt: '', pri: 'MEDIUM' },
+      { desc: 'Build SOPs HC-FIN-001 (Weekly Cash Req) and HC-FIN-002 (Monthly PF Allocation)', amt: '', pri: 'MEDIUM' },
+      { desc: 'Spotify $19.99/mo coded as Office Supplies -- confirm business or personal', amt: '$19.99', pri: 'LOW' },
+      { desc: 'Google One $0.53/mo -- confirm business or personal', amt: '$0.53', pri: 'LOW' }
+    ]
+  },
+  {
+    id: 'eoe',
+    name: 'Elite Ops Exterminators',
+    entity: 'S-Corporation',
+    basis: 'Accrual',
+    classes: '',
+    notes: 'Pest control, residential and commercial, DC/MD/VA market. Owner Darrell DJ Profit, sole shareholder. Tier 1 Full Advisory. Profit First client, active since January 2026. Bi-monthly allocations (10th and 25th). Real Revenue formula: Total Income - Materials & Subs - H.E.R.O. Wages. TAPs apply to Real Revenue only. TAPs: Profit 5% (Truist 1811), Owner Pay 15% (Truist 1852), Tax 10% (Truist 1829), Operating 70% (Truist 1849). Payroll account Truist 1845 receives flat $20,800 per allocation (H.E.R.O. $11,355 + DJ wages $4,245 + Natalia/taxes $5,200). DJ owner draw $4,440.50 bi-monthly to personal ($8,881/mo total). Income Checking Truist 1803 should be ~$0 after each allocation; remaining balance means allocation incomplete. S-Corp comp structure: DJ W-2 salary $5,416.67/mo (carved from H.E.R.O. Wages via payroll AJE), plus distributions $8,881/mo -- deliberate 199A tax strategy, do not flag. Natalia (Ops Director) salary $9,000/mo via payroll AJE from H.E.R.O. Wages. Payroll AJE: Gusto posts gross as H.E.R.O. Wages 5050, then monthly AJE carves out DJ to 5810 and Natalia to 5812 -- expected, not miscoding. Revenue invoiced through Jobber as "Elite Monthly Jobber Billing" two invoices/month. Revenue splits by geography (DC ~87% recurring) and type (recurring ~79%). Seasonal: Q1 slowest, revenue ramps through spring/summer. December $97,699 to January $78,580 dip is expected seasonality -- do not flag. Fleet: 5+ service vehicles, $7K-$10K/mo total vehicle costs (GM Financial loans ~$363,533 total, ~$2,900/mo interest, Forge Insurance $2,041/mo, Drive EZ tolls ~$350/week, Linxup GPS $407/mo). AMEX CC 1025 has multiple card numbers (1025, 1041, 1009, 1058) -- all same account. Employee Expense Card 8633 used for technician fuel/car washes -- small dollar amounts are normal. December year-end anomaly: $112,737 depreciation + $15,974 bad debt write-off drove large net loss -- not a monthly norm, do not compare December to other months. EOF franchise investment $78,248 on balance sheet -- payments held at $0, not forgiven. Jobber merchant fees ~$1,500-$2,000/mo booked via monthly JE, not bank transaction. DC sales tax collected on taxable services, tracked in Allocation Calculator. CPA John Hopkins handles S-Corp compliance and 199A QBI optimization.',
+    defaultOI: [
+      { desc: 'VAULT account setup on Relay -- target $180,556 (3 months OpEx)', amt: '$180,556', pri: 'HIGH' },
+      { desc: 'SEP-IRA setup -- max $22,965, graduated funding schedule ready', amt: '$22,965', pri: 'HIGH' },
+      { desc: 'S-Corp reasonable comp confirmation -- CPA John to validate 2026 salary level', amt: '', pri: 'HIGH' },
+      { desc: 'Hire additional H.E.R.O. technician -- budgeted in payroll at $11,355 bi-monthly', amt: '', pri: 'HIGH' },
+      { desc: 'Feb 25th allocation shortfall $8,459 -- monitor cash flow, may need supplemental OpEx transfer', amt: '$8,459', pri: 'HIGH' },
+      { desc: 'Account swap/relabeling in QBO -- 1829 Tax and 1852 Owner Pay need correction', amt: '', pri: 'MEDIUM' },
+      { desc: 'VA Dept of Taxation $322 payment posted from Owner Pay instead of Tax -- document and reconcile', amt: '$322.00', pri: 'MEDIUM' },
+      { desc: 'SUTA rate monitoring -- DC unemployment rate elevated ($1,882 in Jan)', amt: '', pri: 'MEDIUM' }
+    ]
+  },
+  {
+    id: 'slater',
+    name: 'Slater Interior Design',
+    entity: 'LLC (S-Corp election)',
+    basis: 'Cash',
+    classes: '',
+    notes: 'Interior design -- services and product resale. DBA Well-Designed Home. Owner Melinda Slater, sole member/shareholder and sole W-2 employee. WA state does not recognize S-Corp election for payroll purposes -- entity treated as LLC for WA PFML, WA Cares Fund, and SUI. Exemptions filed for WA PFML and WA Cares Fund (~$603/yr savings). Two revenue streams: design/consultation services (billed hourly by project, lumpy $8K-$30K+/mo, Q1 and summer are typically slow) and product resale (furniture/materials/fixtures sourced for clients, sporadic -- some months $0, creates COGS and WA sales tax when present). All client invoicing through QuickBooks Payments. Profit First client since April 2022. TAPs: Owner\'s Pay 35% (BECU 2652), OpEx 50% (BECU 2678), Tax 10% (BECU 2587), Profit 5% (BECU 2503, quarterly transfers to First Fed 2967 for higher yield). Income Checking BECU 9283 should allocate to ~$0 each month ($500 buffer retained). Subs & Materials BECU 9778 holds client material deposits ~$5K -- NOT part of PF allocation flow. Sales tax and material costs deducted before Real Revenue calculation. Melinda W-2 wages $3,625/mo via Gusto from Owner Pay BECU 2652, not from OpEx. Gusto processing fees ~$61/mo debit from Owner Pay account, not OpEx. Cochran Admin Services paid via ACH and occasionally CC -- mixed methods are normal. Bibby Fine Interiors (Canada) is international, no 1099 required, paid via CC. Real Marketing Solutions $2,000/mo and Jan Carter are domestic 1099 contractors. WA B&O and sales tax paid from Tax Savings. PF deep dive quarterly. Do not produce advisory commentary.',
+    defaultOI: []
+  },
+  {
+    id: 'aai',
+    name: 'Atlas Adventures International',
+    entity: 'Sole Proprietorship',
+    basis: 'Cash',
+    classes: '',
+    notes: 'Luxury women-only group travel (Atlas Adventures International) and individual travel planning (Blonde Atlas) -- both revenue streams in one QBO file. Owner Whitney Haldeman, London-based US citizen, files as sole proprietor with foreign earned income exclusion. Tier 1 Full Advisory. Revenue accounts: 4200 AAI Group Travel (94% of 2025 revenue), 4210 Blonde Atlas Individual Travel Planning, 4220 Affiliate Income. Primary banking: Wise USD 6308 (~$214K). Multi-currency operations (USD, GBP, EUR, ZAR, PEN, EGP, JPY, CHF, NZD, SEK, MAD) -- exchange gain/loss entries are routine. AMEX Business CC 1006 carries $100K+ during trip booking season due to hotel/vendor prepayments -- expected, not a red flag. Prepaid Trip Expenses on balance sheet (~-$330K) = hotel prepayments for future trips released to COGS when trip occurs -- large negative balance is normal. Negative gross profit in heavy prepayment months is expected and is a timing issue, not a profitability problem. Month-end income reclassification JEs (e.g., 2601 JMD Reclass Sale) move income between 4200 and specific trip projects -- large offsetting debits/credits in income section are expected and net to zero. Stripe clearing account 1040 should net to zero after reconciliation. 1030 Cash Clearing (personal CC reimbursements) should also reconcile to zero -- negative balance means business owes Whitney. US contractors paid via Gusto (funded from Wise USD); Gusto debit may appear as lump sum needing matching to individual contractor bills. Unapplied Cash Bill Payment Expense = unmatched Gusto payments. GBP-based charges on AMEX are normal business expenses (Whitney is London-based). No 1099 required for international contractors (Wise payments). Trip margins target 30-35%; 2025 average 31%. 12 group trips in 2025, all profitable. VAT handled by HTJ.Tax (Derren/Weldon) quarterly. PF implementation on hold due to cash position (~$490K hotel prepayments impacted reserves). JMD fee pricing realignment in progress ($2,500/mo does not reflect Tier 1 scope).',
+    defaultOI: [
+      { desc: 'JMD fee pricing realignment -- $2,500/mo does not reflect Tier 1 scope of services', amt: '$2,500', pri: 'HIGH' },
+      { desc: 'Unapplied Cash Bill Payment Expense ($5,819.72 Gusto 2/6/2026) -- match to contractor bills', amt: '$5,819.72', pri: 'HIGH' },
+      { desc: '1011 N Stafford St Arlington -- $575.57 in 9999 Client to Advise + $1,017.81 in 5130 Meals -- confirm purpose', amt: '$1,593.38', pri: 'MEDIUM' },
+      { desc: '1030 Cash Clearing balance -$1,034.00 -- business owes Whitney, needs reimbursement or reclassification', amt: '$1,034.00', pri: 'MEDIUM' },
+      { desc: '1040 Stripe Clearing balance $21,402.87 -- should net to zero, needs reconciliation', amt: '$21,402.87', pri: 'MEDIUM' },
+      { desc: 'PF implementation on hold -- revisit when cash reserves recover from prepayment cycle', amt: '', pri: 'MEDIUM' },
+      { desc: '3173 RB Income account balance $1,050 -- verify purpose and clear', amt: '$1,050.00', pri: 'LOW' },
+      { desc: 'Airalo $4.50 coded to 9999 Client to Advise -- confirm business or personal', amt: '$4.50', pri: 'LOW' }
+    ]
+  },
+  {
+    id: 'vi',
+    name: 'Vivid Imagination Inc.',
+    entity: 'S-Corporation',
+    basis: 'Cash',
+    classes: '',
+    notes: 'EdTech -- VR, drone, and technology programs for K-12 schools. Owner Branden Baskin, W-2 at $100K S-Corp reasonable comp (implemented 2025). Three revenue lines in one QBO file: School Programs (core, primary revenue), Drone Product Sales (early stage), Private Events (early stage). Revenue is seasonal -- school contracts front-loaded in spring, May/June are primary collection months, Q1 and Q4 typically lower. 90-day AR cycle typical -- do not flag slow collections as unusual. Contractor commissions paid the month AFTER the school pays the invoice, not when contract is signed. Prepaid contracts (schools paying in advance) must go to unearned revenue and recognized when services delivered -- process being established with Kelly in 2026. ~30 active coach contractors -- invoices submitted via Hubdoc, entered in QBO by JMD, compared against Gusto before processing. Semi-monthly payroll cycles: Cycle 1 (15th) pays all coaches + Erika Bayh; Cycle 2 (end of month) pays Nicolette Calandra, JMD, and Simplification Services. Branden W-2 payroll currently skipped in regular Gusto cycles per S-Corp setup handled separately. Non-Gusto payments (Zelle, Cash App, etc.) require historical Gusto entry for 1099 tracking. Sharzer Associates (Danielle Scire) 20% sales commission -- JMD manages correspondence. Elaine Porcher VP of Development 10% commission added to W-2. Chase Savings ~$200K reserve (year-end 2025). 2025 revenue $1,076,510 (+206% YoY). PF rollout planned Q2 2026 -- framework in place. Drone sales tax compliance under review, not yet resolved. Entity separation under discussion for 3 business lines. CPA John handles S-Corp compliance and tax filing. Do not produce advisory commentary.',
+    defaultOI: [
+      { desc: 'Ghana expansion outline -- define revenue line classification and entity setup', amt: '', pri: 'HIGH' },
+      { desc: 'Nova LLC formation -- confirm legal structure and status', amt: '', pri: 'HIGH' },
+      { desc: 'Year-end report finalization -- confirm anything still needed for CPA John', amt: '', pri: 'HIGH' },
+      { desc: 'Prepaid contract identification with Kelly -- unearned revenue setup', amt: '', pri: 'HIGH' },
+      { desc: 'Wise account setup and currency workflow', amt: '', pri: 'MEDIUM' },
+      { desc: 'Drone supplier and manufacturing plan -- confirm margin impact', amt: '', pri: 'MEDIUM' },
+      { desc: 'Erica billing process -- confirm functioning correctly', amt: '', pri: 'MEDIUM' },
+      { desc: 'SEP IRA contribution guidance from CPA John -- limits and deadline', amt: '', pri: 'MEDIUM' },
+      { desc: 'Profit First rollout plan -- confirm percentages and benevolence allocation with Jenni/Branden', amt: '', pri: 'MEDIUM' },
+      { desc: 'Personal expenses moving to business accounts -- in progress', amt: '', pri: 'MEDIUM' },
+      { desc: 'Drone sales tax review -- compliance not yet resolved', amt: '', pri: 'MEDIUM' },
+      { desc: 'Kelly monthly meeting cadence established -- invoicing training plan', amt: '', pri: 'MEDIUM' }
+    ]
+  },
+
+  // ADD NEW CLIENTS HERE - copy a block above, assign a unique id, fill in all fields
+];
+
+// Clients live in this file only. No localStorage. All team members see the same list.
+let clients = DEFAULT_CLIENTS.slice();
+let activeClientId = clients[0].id;
+
+function renderClientTabs() {
+  const container = document.getElementById('clientTabs');
+  container.innerHTML = '';
+  clients.forEach(c => {
+    const btn = document.createElement('button');
+    btn.className = 'client-tab' + (c.id === activeClientId ? ' active' : '');
+    btn.textContent = c.name;
+    btn.onclick = () => { activeClientId = c.id; renderClientTabs(); loadClientDefaults(); };
+    container.appendChild(btn);
+  });
+  const addBtn = document.createElement('button');
+  addBtn.className = 'add-client-tab';
+  addBtn.textContent = '+ Add client';
+  addBtn.title = 'To add a client permanently, edit DEFAULT_CLIENTS in the HTML file and redistribute to the team.';
+  addBtn.onclick = () => document.getElementById('modalOverlay').classList.add('show');
+  container.appendChild(addBtn);
+}
+
+function loadClientDefaults() {
+  const client = clients.find(c => c.id === activeClientId);
+  if (!client) return;
+  document.getElementById('basis').value = client.basis || 'Cash';
+  document.getElementById('oiList').innerHTML = '';
+  (client.defaultOI || []).forEach(oi => addOI(oi.desc, oi.amt, oi.pri));
+}
+
+function saveCurrentOI() {
+  // Updates in-memory only. Changes do not persist after page reload.
+  // To make OI changes permanent, edit DEFAULT_CLIENTS in the file and redistribute.
+  const client = clients.find(c => c.id === activeClientId);
+  if (!client) return;
+  const rows = document.querySelectorAll('#oiList .oi-row');
+  client.defaultOI = [];
+  rows.forEach(r => {
+    const desc = r.querySelector('.oi-desc').value.trim();
+    const amt = r.querySelector('.oi-amt').value.trim();
+    const pri = r.querySelector('.oi-pri').value;
+    if (desc) client.defaultOI.push({ desc, amt, pri });
+  });
+}
+
+// --- OPEN ITEMS ---
+function addOI(desc='', amt='', pri='MEDIUM') {
+  const list = document.getElementById('oiList');
+  const div = document.createElement('div');
+  div.className = 'oi-row';
+  div.innerHTML = `
+    <input type="text" class="oi-desc" value="${escHtml(desc)}" placeholder="Description">
+    <input type="text" class="oi-amt oi-amt-field" value="${escHtml(amt)}" placeholder="Amount">
+    <select class="oi-pri">
+      <option${pri==='URGENT'?' selected':''}>URGENT</option>
+      <option${pri==='HIGH'?' selected':''}>HIGH</option>
+      <option${pri==='MEDIUM'?' selected':''}>MEDIUM</option>
+      <option${pri==='LOW'?' selected':''}>LOW</option>
+    </select>
+    <button class="rm-btn" onclick="this.parentElement.remove()" title="Remove">×</button>
+  `;
+  list.appendChild(div);
+  const sel = div.querySelector('.oi-pri');
+  function updatePriColor() {
+    sel.className = 'oi-pri oi-pri-' + sel.value;
+  }
+  sel.addEventListener('change', updatePriColor);
+  updatePriColor();
+}
+
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function getOIItems() {
+  const rows = document.querySelectorAll('#oiList .oi-row');
+  const items = [];
+  rows.forEach(r => {
+    const desc = r.querySelector('.oi-desc').value.trim();
+    const amt = r.querySelector('.oi-amt').value.trim();
+    const pri = r.querySelector('.oi-pri').value;
+    if (desc) items.push({ desc, amt, pri });
+  });
+  return items;
+}
+
+// --- GENERATE ---
+function generate() {
+  saveCurrentOI();
+  const client = clients.find(c => c.id === activeClientId);
+  const month = document.getElementById('closeMonth').value;
+  const year = parseInt(document.getElementById('closeYear').value);
+  const basis = document.getElementById('basis').value;
+  const priorRev = document.getElementById('priorRevenue').value.trim() || '[INSERT FROM PRIOR CLOSE REVIEW]';
+  const priorNI = document.getElementById('priorNI').value.trim() || '[INSERT FROM PRIOR CLOSE REVIEW]';
+  const notes = document.getElementById('monthNotes').value.trim();
+  const quarterly = document.getElementById('optQuarterly').checked;
+  const yearEnd = document.getElementById('optYearEnd').checked;
+  const oiItems = getOIItems();
+  const prev = prevMonth(month, year);
+  const prevLabel = `${prev.m} ${prev.y}`;
+  const ld = lastDay(month, year);
+  const clientName = client ? client.name : 'Client';
+  const entityType = client ? client.entity : '';
+  const classes = client ? client.classes : '';
+  const clientNotes = client ? client.notes : '';
+
+  const hasClasses = classes && classes.trim().length > 0;
+  const classLine = hasClasses
+    ? `Every transaction must be assigned to a class: ${classes}. Unclassified transactions are the #1 audit priority.`
+    : 'Verify all transactions are properly categorized.';
+
+  const oiBlock = oiItems.length
+    ? oiItems.map(i => `  - ${i.desc}${i.amt ? ' | ' + i.amt : ''} | ${i.pri}`).join('\n')
+    : '  None.';
+
+  const quarterlyBlock = quarterly ? `
+====================================================================
+QUARTERLY CLOSE ADDITIONS
+====================================================================
+
+This is a QUARTERLY CLOSE. In addition to standard deliverables, also attach:
+- Cash Flow Statement, Cash Basis, current quarter
+- Owner Equity Tracking Spreadsheet (current version)
+- Transaction List by Vendor, current quarter
+
+Quarterly audit scope additions:
+- Pull owner draws from the Cash Flow Statement (excludes tax payments from draws).
+- Verify owner equity balances against the tracking spreadsheet.
+- Flag any contractor approaching or exceeding $600 YTD in the Issues Log.
+- Note any quarter-over-quarter revenue or expense trends in the Issues Log.
+` : '';
+
+  const yearEndBlock = yearEnd ? `
+====================================================================
+YEAR-END CLOSE ADDITIONS
+====================================================================
+
+This is a YEAR-END CLOSE. Full audit mode. In addition to standard deliverables, also attach:
+- Full-year P&L Detail
+- Transaction List by Vendor, full year (for 1099 compliance)
+- Cash Flow Statement, full year
+
+Year-end additions:
+- Conduct full vendor audit: duplicates, missing W-9s, 1099 thresholds.
+- Review all owner equity accounts and reconcile against the tracking spreadsheet.
+- Flag all contractors with $600+ in payments for 1099 evaluation.
+- Verify all reclassifications from the year are documented in QBO.
+` : '';
+
+  const notesBlock = notes ? `
+====================================================================
+ADDITIONAL CONTEXT FOR THIS MONTH
+====================================================================
+
+${notes}
+` : '';
+
+  const pl1Label = hasClasses
+    ? `Profit and Loss by Class — ${month} ${year} only`
+    : `Profit and Loss — ${month} ${year} only`;
+  const pl2Label = hasClasses
+    ? `Profit and Loss by Class — ${month} vs ${prevLabel} (comparison)`
+    : `Profit and Loss — ${month} vs ${prevLabel} (comparison)`;
+  const perfTableLabel = hasClasses
+    ? 'Performance by Class'
+    : 'Performance Summary';
+
+  const tab2Block = hasClasses
+    ? `TAB 2: CLASS AUDIT
+All transactions from P&L Detail. Columns: Date, Transaction Type, Vendor, Location/Mailing, Class, Account, Payment Account, Amount, Memo/Description, Flag, Flag Notes.
+Flag: missing class, class/payment account mismatch, known vendor in wrong class, new vendor.
+Payment account pattern: Kelly card = Kelly class, Randy card = Randy class, Ameris Checking = Joint or either.`
+    : `TAB 2: TRANSACTION REVIEW
+All transactions from P&L Detail. Columns: Date, Transaction Type, Vendor, Account, Payment Account, Amount, Memo/Description, Flag, Flag Notes.
+Flag: known vendor in unexpected account, new vendor not in Client Profile, missing memo on transactions that need research.`;
+
+  const errorPatternsBlock = hasClasses
+    ? `1. Transactions missing class assignment
+2. Payment account does not match expected class (Kelly card/Kelly class, Randy card/Randy class)
+3. Known vendor in unexpected account or class
+4. New vendors not in Client Profile
+5. Generic vendor names — expected but verify class and account
+6. PayPal transactions — verify actual vendor in memo
+7. No memo on transactions that need research
+8. Journal entries missing vendor names`
+    : `1. Known vendor coded to unexpected account
+2. New vendors not in Client Profile
+3. Generic vendor names — expected but verify account is correct
+4. PayPal transactions — verify actual vendor in memo
+5. No memo on transactions that need research
+6. Journal entries missing vendor names
+7. Expenses that may be miscoded to owner draw (or vice versa)`;
+
+  const prompt = `HANDOFF PROMPT — ${month.toUpperCase()} ${year} MONTHLY CLOSE
+Client: ${clientName}${entityType ? ' (' + entityType + ')' : ''}
+Basis: ${basis}
+Status: Ready to Execute
+
+====================================================================
+CONTEXT
+====================================================================
+
+I'm Jenni, owner of JMD Business Solutions. Books are closed for ${month} ${year}. Produce three deliverables from the uploaded QBO exports.
+
+====================================================================
+TASK OVERVIEW
+====================================================================
+
+DELIVERABLE 1: Monthly Close Review (.docx) — client-facing
+DELIVERABLE 2: Internal Transaction Verification Audit (.xlsx) — JMD internal only
+DELIVERABLE 3: Updated Client Profile (.docx) — update the attached profile with this month's data
+${quarterlyBlock}${yearEndBlock}
+====================================================================
+REPORTS ATTACHED
+====================================================================
+
+QBO Exports (all ${basis} Basis, ${month} ${year}):
+1. ${pl1Label}
+2. ${pl2Label}
+3. Profit and Loss Detail — ${month} ${year}
+4. Balance Sheet Detail — as of ${month} ${ld}, ${year}
+
+Also attached:
+5. Client Profile — ${clientName} (current version, will be updated as Deliverable 3)
+6. JMD Deliverable Standards Guide
+${quarterly || yearEnd ? `7. See Quarterly/Year-End sections above for additional attachments.\n` : ''}
+====================================================================
+PRIOR MONTH REFERENCE NUMBERS (for comparison)
+====================================================================
+
+${prevLabel} Revenue: ${priorRev}
+${prevLabel} Net Income: ${priorNI}
+
+====================================================================
+DELIVERABLE 1: MONTHLY CLOSE REVIEW (CLIENT-FACING)
+====================================================================
+
+File: ${clientName.replace(/ /g,'_')}_Monthly_Close_${month}_${year}.docx
+
+FORMAT (match exactly):
+
+    Monthly Close Review
+    ${clientName}
+    Period: ${month} ${year}
+    Basis: ${basis}
+    Prepared by: Jenni Davis, JMD Business Solutions
+    Date: [Current Month Year]
+    ____________________________________________  [navy horizontal rule]
+
+    [Quick note paragraph]
+
+    Key Figures  [bold, underlined]
+    [Table: Metric | ${month} ${year} | ${prevLabel}]
+
+    ${perfTableLabel}  [bold, underlined]
+    [Table: full words only — Gross Profit, Operating Expenses, Net Income; current + prior month columns]
+
+QUICK NOTE RULES:
+- 3 to 5 sentences. Factual. No filler.
+- No em dashes, en dashes, or hyphens as dashes. Use periods or commas.
+- No headers, bullets, or formatting. Plain paragraph only.
+- No open items or action items in the note.
+- Voice: how would Jenni text this to the client in 30 seconds?
+- Cover: revenue vs prior month, notable expense changes, bottom line net income.
+
+TABLE FORMATTING:
+- Negative numbers: red text, parentheses format.
+- Net Income row: bold.
+- Metric column: left-aligned, bold. Number columns: center-aligned.
+- Spell out all column headers. No abbreviations (not "GP", not "NI", not "OpEx").
+
+====================================================================
+DELIVERABLE 2: INTERNAL TRANSACTION VERIFICATION AUDIT (JMD ONLY)
+====================================================================
+
+File: ${clientName.replace(/ /g,'_')}_${month}${year}_Internal_Verification.xlsx
+
+Does NOT go to the client.
+
+5-tab Excel workbook:
+
+TAB 1: VERIFICATION SUMMARY
+- Total transaction count
+- Count with class assigned vs missing
+- Count by class (${classes || 'all classes'})
+- Blank vendor names, blank memos
+- Overall pass/fail status
+
+${tab2Block}
+
+TAB 3: ACCOUNT CODING AUDIT
+Cross-reference each vendor against Client Profile known vendor list.
+Flag: account does not match expected, vendor in multiple accounts, new vendor not in profile.
+
+TAB 4: KNOWN PATTERNS CHECK
+Verify all expected recurring items appear. Flag missing vendors and amounts >25% outside normal range.
+
+TAB 5: ISSUES LOG
+Standard action items format: Item #, Description, Detail, Amount, Status (OPEN/RESOLVED), Priority (URGENT/HIGH/MEDIUM/LOW), Recommended Action.
+One row per finding. Color-coded by priority.
+
+COLOR CODING (JMD standards):
+Navy headers, white bold text. Yellow = needs review. Red = error or flag. Green = verified/OK.
+
+ERROR PATTERNS TO WATCH:
+${errorPatternsBlock}
+
+====================================================================
+DELIVERABLE 3: UPDATED CLIENT PROFILE
+====================================================================
+
+File: ${clientName.replace(/ /g,'_')}_Client_Profile_Updated.docx
+
+Read the attached Client Profile. Make ONLY these updates. Do not rewrite, restructure, or add sections.
+
+UPDATE 1 — Review History table (Section 6):
+Add a new row for ${month} ${year} with:
+- Period: ${month} ${year}
+- Revenue (Cash): [from P&L]
+- Key Finding: [1-2 sentence summary of most notable finding from this month — factual, no commentary]
+- Net Income: [from P&L]
+
+UPDATE 2 — Open Items table (Section 5):
+- Remove any items that appear fully resolved in this month's data.
+- Update the "Status" field to "Awaiting client response" for items that are still open.
+- Add new items identified in the Internal Verification Audit (Issues Log, OPEN items only). Use the same format: Since, Item, Status, Priority.
+
+UPDATE 3 — Date:
+Update the "Last Updated" field to ${month} ${year}.
+
+No other changes. Output the full updated document.
+
+====================================================================
+OPEN ITEMS CARRYING FORWARD
+====================================================================
+
+Do NOT include in the client-facing note. If any appear resolved in ${month} data, mark RESOLVED in the Issues Log and remove from the updated profile.
+
+${oiBlock}
+${notesBlock}
+====================================================================
+CLIENT CONTEXT
+====================================================================
+
+${clientNotes || 'See attached Client Profile for full context.'}
+${hasClasses ? `\nClass structure: ${classes}. ${classLine}` : ''}
+
+====================================================================
+WHAT NOT TO DO
+====================================================================
+
+- Do not produce advisory commentary or CFO-level recommendations.
+- Do not flag known recurring items as issues unless amount is >25% outside normal range.
+- Do not include open items or action items in the client-facing quick note.
+- Do not use abbreviations in table headers. Spell out all labels.
+- Do not use em dashes, en dashes, or hyphens as dashes anywhere in any deliverable.
+- Do not manufacture findings. If the month is clean, say so.
+- Do not rewrite or restructure the Client Profile. Update only the specified fields.`;
+
+  document.getElementById('outputBox').textContent = prompt;
+  document.getElementById('outputLabel').textContent = `${clientName} — ${month} ${year} Handoff Prompt`;
+  document.getElementById('outputWrap').classList.add('show');
+
+  const files = [
+    { name: pl1Label + '.xlsx', type: 'xlsx' },
+    { name: pl2Label + '.xlsx', type: 'xlsx' },
+    { name: `P&L Detail — ${month} ${year}.xlsx`, type: 'xlsx' },
+    { name: `Balance Sheet Detail — ${month} ${ld}, ${year}.xlsx`, type: 'xlsx' },
+    { name: `${clientName}_Client_Profile.docx`, type: 'docx' },
+    { name: `JMD_Deliverable_Standards_Guide.docx`, type: 'proj' },
+  ];
+  if (quarterly || yearEnd) {
+    files.push({ name: `Cash Flow Statement — ${month} ${year}.xlsx`, type: 'xlsx' });
+    files.push({ name: `Owner Equity Tracking Spreadsheet.xlsx`, type: 'xlsx' });
+    files.push({ name: `Transaction List by Vendor.xlsx`, type: 'xlsx' });
+  }
+  const ftLabel = { xlsx: 'XLSX', docx: 'DOCX', proj: 'Project File' };
+  document.getElementById('fileList').innerHTML = files.map((f, i) =>
+    `<div class="file-item"><div class="file-num">${i+1}</div>${f.name}<span class="file-type ft-${f.type}">${ftLabel[f.type]}</span></div>`
+  ).join('');
+
+  setTimeout(() => document.getElementById('outputWrap').scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
+}
+
+function doCopy() {
+  const text = document.getElementById('outputBox').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy to clipboard'; btn.classList.remove('copied'); }, 2000);
+  }).catch(() => {
+    document.getElementById('outputBox').select();
+    document.execCommand('copy');
+  });
+}
+
+function clearOutput() {
+  document.getElementById('outputWrap').classList.remove('show');
+}
+
+// --- MODAL ---
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('show');
+  ['newClientName','newClientEntity','newClientClasses','newClientRevenue','newClientExpenses','newClientAudit'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('newClientBasis').value = 'Cash';
+  document.getElementById('modalOIList').innerHTML = '';
+}
+
+function addModalOI(desc='', amt='', pri='MEDIUM') {
+  const list = document.getElementById('modalOIList');
+  const div = document.createElement('div');
+  div.className = 'oi-row';
+  div.innerHTML = `
+    <input type="text" class="oi-desc" value="${escHtml(desc)}" placeholder="Description">
+    <input type="text" class="oi-amt oi-amt-field" value="${escHtml(amt)}" placeholder="Amount">
+    <select class="oi-pri">
+      <option${pri==='URGENT'?' selected':''}>URGENT</option>
+      <option${pri==='HIGH'?' selected':''}>HIGH</option>
+      <option${pri==='MEDIUM'?' selected':''}>MEDIUM</option>
+      <option${pri==='LOW'?' selected':''}>LOW</option>
+    </select>
+    <button class="rm-btn" onclick="this.parentElement.remove()" title="Remove">x</button>
+  `;
+  list.appendChild(div);
+  const sel = div.querySelector('.oi-pri');
+  function updatePriColor() { sel.className = 'oi-pri oi-pri-' + sel.value; }
+  sel.addEventListener('change', updatePriColor);
+  updatePriColor();
+}
+
+function saveNewClient() {
+  const name = document.getElementById('newClientName').value.trim();
+  if (!name) { alert('Please enter a client name.'); return; }
+
+  const revenue = document.getElementById('newClientRevenue').value.trim();
+  const expenses = document.getElementById('newClientExpenses').value.trim();
+  const audit = document.getElementById('newClientAudit').value.trim();
+
+  const noteParts = [];
+  if (revenue) noteParts.push(revenue);
+  if (expenses) noteParts.push(expenses);
+  if (audit) noteParts.push(audit);
+
+  const modalOI = [];
+  document.querySelectorAll('#modalOIList .oi-row').forEach(r => {
+    const desc = r.querySelector('.oi-desc').value.trim();
+    const amt = r.querySelector('.oi-amt').value.trim();
+    const pri = r.querySelector('.oi-pri').value;
+    if (desc) modalOI.push({ desc, amt, pri });
+  });
+
+  const newClient = {
+    id: 'client_' + Date.now(),
+    name,
+    entity: document.getElementById('newClientEntity').value.trim(),
+    basis: document.getElementById('newClientBasis').value,
+    classes: document.getElementById('newClientClasses').value.trim(),
+    notes: noteParts.join(' '),
+    defaultOI: modalOI
+  };
+  clients.push(newClient);
+  // Session-only addition. Not saved to file. Not visible to other team members.
+  activeClientId = newClient.id;
+  renderClientTabs();
+  loadClientDefaults();
+  closeModal();
+}
+
+document.getElementById('modalOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+// INIT
+renderClientTabs();
+loadClientDefaults();
+</script>
+</body>
+</html>
