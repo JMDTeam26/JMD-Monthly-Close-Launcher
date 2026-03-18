@@ -732,176 +732,6 @@ const DEFAULT_CLIENTS = [
       { desc: 'Prepaid contract identification with Kelly - establish unearned revenue process', amt: '', pri: 'MEDIUM' },
     ]
   }
-  {
-    id: 'arron',
-    name: 'Arron Leadership Coaching',
-    entity: 'S-Corporation',
-    basis: 'Cash',
-    classes: '',
-    notes: 'Executive coaching and leadership advisory. Owner Laurie Arron (Laurie Benezra Arron), sole owner. Revenue is lumpy from Connected EC (primary client, multiple deposits/month, largest source by far) plus coaching clients Justin Ailes and Catherine Tramuto-Tobin (installment-based, paid via QBO Payments) and small book royalties (Amazon/Audible/LSI, under $200/mo combined, coded to Book Sale Revenue). S-Corp payroll: Laurie takes W-2 salary ~$12,333/mo through Gusto; health insurance $3,100/mo added to W-2 wages per IRS rules with offsetting JE -- standard S-Corp treatment, do not flag. Owner equity sub-accounts: LA-Equity tracks Contributions, Distributions, Investments, Tax Paid. Year-start JEs reset prior-year balances to Retained Earnings -- normal. Monthly JEs for home office ($1,000/mo) and Acura lease ($484.97/mo) are standard recurring entries (debit expense, credit LA-Contributions) -- do not flag. Shellpoint mortgage (~$9,994/mo) coded as owner distribution from WF Income account; watch for timing issues that cause low or negative balances. The Digital Cupcake (~$601/mo, social media management) paid via Wise -- verify coding to Advertising & Promotions every month (known history of miscoding to Payroll Fees). Wise transactions show as "Wise US Inc" or "BUSINESS TO BUSINESS ACH Wise Inc" -- use memo to identify actual payee. Zika / Zika 2 LLC transfers are owner distributions (related Seattle real estate entity) -- do not flag. Debit card subscriptions (Squarespace, GoDaddy, Flodesk, ChatGPT ~$21) charged to WF debit card 0201 -- normal. Note: P&L Detail is not available for this client. Use Transaction Detail by Account as the primary data source. CPA is Valerie.',
-    defaultOI: []
-  },
-  {
-    id: 'eof',
-    name: 'Elite Ops Franchise',
-    entity: 'S-Corporation',
-    basis: 'Accrual',
-    classes: '',
-    notes: 'STATUS: PAUSED -- entity dormant, no active revenue. JMD support paused effective February 2026. Do not produce monthly close deliverables until reactivated. Resume services when first franchise territory is sold. EOF is the franchisor entity for the Elite Ops pest control brand nationally. Same owner as EOE (Darrell DJ Profit). EOE carries $78,248 Elite Ops Franchise Investment asset on its balance sheet. Franchise payments from EOE held at $0 since 2024 -- not forgiven, not accruing. If EOF-related expenses appear on EOE books (LegalZoom, Squarespace, Corporate Filings LLC), flag for entity allocation to protect both P&Ls. Business model: sells pest control franchise territories (2 weeks training, exclusive territory, ongoing support, military/veteran focus). When reactivated, expect new vendors for FDD legal counsel, franchise marketing, broker commissions, and franchisee onboarding. Intercompany accounting between EOE and EOF will need to be established at reactivation.',
-    defaultOI: [
-      { desc: 'JMD support paused -- resume when first franchise sold', amt: '', pri: 'LOW' },
-      { desc: 'Confirm EOF has separate QBO file (vs. tracked within EOE)', amt: '', pri: 'MEDIUM' },
-      { desc: 'Confirm state registrations current for franchise offering', amt: '', pri: 'MEDIUM' },
-      { desc: 'Intercompany accounting -- $78,248 franchise investment on EOE needs proper offset on EOF', amt: '$78,248', pri: 'MEDIUM' }
-    ]
-  },
-  {
-    id: 'above',
-    name: 'Above & LLC',
-    entity: 'LLC',
-    basis: 'Cash',
-    classes: '',
-    notes: 'Executive coaching/strategic advisory. Owners Misty Reich and Brian Reich (married); Brian executes transactions, distributions are Misty\'s member equity. Profit First client, certified, active since Feb 2025. Multi-entity Personal CFO engagement: Above & LLC (this profile), Cascade Portfolio CPA (Brian\'s company, separate profile), and personal finances -- all reviewed in one monthly meeting. TAPs: Owner\'s Comp 62% (Relay 3017), Tax 20% (Relay 3018 -- also $24K in Wealthfront, verify still active and part of PF Tax structure), OpEx 10% (Relay 8778), Profit 8% (Relay 8783). Income Checking Relay 8781 should be ~$0 after allocation; any material balance means allocation was missed. Cash Reserve Relay 3749 pulls to cover heavy OpEx months -- by design, not an error. Key contractor: Five Houses Investment SL (Misty/Brian related entity, Spanish SL) -- ~$35K quarterly via Wise, no W-8 required, creates negative gross profit in quarters it hits -- expected, not a red flag. Connected EC is key consulting client, pays via Wise in GBP; revenue deposits to Wise USD. GBP charges on Citi business card are normal (Misty is London-based). Citi CC autopay clears prior month\'s balance from OpEx -- one-month lag is expected. PF deep dive is quarterly only; monthly review does not include PF analysis unless something looks off. Income Checking at $0.11 is correct -- means PF allocation executed properly. Distribution structure: Misty is the member; Brian often initiates payments; payee may show Misty Reich Ltd or Brian Reich -- both correct.',
-    defaultOI: [
-      { desc: 'Wealthfront Tax Savings balance -- verify still active and part of PF Tax structure', amt: '$24,000', pri: 'MEDIUM' }
-    ]
-  },
-  {
-    id: 'glo',
-    name: 'GLO Architecture',
-    entity: 'S-Corporation',
-    basis: 'Cash',
-    classes: '',
-    notes: 'Architecture firm, multifamily/affordable housing/mixed-use, Southern California market. Owner Kevin Nivinskus, sole shareholder. Tier 1 Full Advisory -- heavy deliverables including project tracking workbooks, cash flow forecasts, PF dashboards, and per-project financials every month. Profit First client, newly implemented February 2026, not yet fully operational. Transitional TAPs: Income pass-through (CB Income 1270, $2K floor), Consultant account funds subcontractors before TAP split (CB Consultant 3557), Owner\'s Comp 40% (Chase Owner Pay account -- pending setup), Tax 5% (CB Tax Savings 6226), OpEx 54% (CB OPEX 3565), Profit 1% (CB Profit Savings 7063). All accounts maintain $2,000 minimum floor that is never counted as available. Monthly PF allocation on the 10th. Revenue is project-based and lumpy. Recurring baseline ~$15,267/mo (Wildomar $9,416/mo CA phase + St. Lukes $5,851/mo CA phase). Monthly cash need ~$25K+ -- flag any month with no milestone payments. Kevin runs personal expenses through the business (mortgage $2,669 + $881 = $3,550/mo, Amazon, Instacart, Nordstrom, Apple Store, streaming, Wayfair, etc.) per client direction -- do not reclassify without approval, document per JMD standards. Quarterly payroll structure: Kevin takes draws throughout the month; JMD books $15,000 historical Gusto payroll quarterly to create W-2 wages. CC debt: Chase #1525 ~$35K (interest ~$920/mo), Hilton Amex ~$3,500 (interest ~$88/mo, late fee $40/mo recurring). Howard Ave project underwater (~negative $39K net position due to $60,487.50 billing error) -- track invoices against correction credit carefully. Kevin occasionally edits QBO directly -- verify before reconciling. BigO Services ($215/mo) handles IT/cybersecurity (data breach Jan 2026, resolved). Josiah Nivinskus Zelle deposits $160/mo are reimbursements coded to 5840 -- expected. Biscred.com $4,250 credit in Jan 2026 was refund/cancellation -- flag if it recurs.',
-    defaultOI: [
-      { desc: 'Owner Pay Chase account setup required for PF distributions', amt: '', pri: 'URGENT' },
-      { desc: 'Execute first full PF allocation per calculator', amt: '', pri: 'URGENT' },
-      { desc: 'Hilton Amex late fee $40/mo recurring -- set up autopay or manual payment before due date', amt: '$40.00', pri: 'HIGH' },
-      { desc: 'Apple Store subscriptions -- confirm which are active and total monthly amount (8+ charges)', amt: '', pri: 'HIGH' },
-      { desc: 'Bradford Online variance -- $113.73 typical, $137.74 appeared previously -- confirm expected amount', amt: '$137.74', pri: 'MEDIUM' },
-      { desc: 'Establish quarterly estimated tax payment amount -- Tax Savings account now building', amt: '', pri: 'MEDIUM' },
-      { desc: 'Google TV subscription $3.99/mo on Hilton Amex -- confirm business or personal', amt: '$3.99', pri: 'LOW' },
-      { desc: 'SEP-IRA strategy deferred until cash position stabilizes', amt: '', pri: 'LOW' }
-    ]
-  },
-  {
-    id: 'hivery',
-    name: 'The Hivery LLC',
-    entity: 'S-Corporation',
-    basis: 'Cash',
-    classes: '',
-    notes: 'Membership-based coworking space. Owner Grace Kraaijvanger, sole owner/operator. Revenue flows through two channels: Kajabi/Stripe (membership and event payments, deposited as "On behalf of Kaj" ACH to checking) and Square POS (retail/cafe sales, daily small deposits). Multiple membership tiers in QBO sub-accounts: M2M Flex $150/mo (4110), M2M Unlimited $250-325 (4115), 6-Month Flex $750 (4120), 6-Month Unlimited $1,250 (4125), VIP Promo $995 one-time (4130), Day Passes $40-200 (4135), Refunds (4990). Incubator program (4500) creates large revenue spikes in enrollment months ($15K-$25K+) -- currently Jan/Winter, likely also Fall. $0 Incubator in non-enrollment months is normal. Kajabi "On behalf of Kaj" ACH deposits are NOT revenue -- they are Stripe/Kajabi fee settlements already netted in clearing; do not double-count as income. Square POS deposits may auto-match to "Squarespace" vendor in QBO -- correct to Square Inc in Product Income 4700. Not yet a PF client, planning 2026 implementation. Rent $9,100/mo (WTB Partners, paid by check). BofA MC carrying ~$68K balance with ~$1,000/mo interest -- largest drag on profitability; must be addressed before PF rollout. Payroll via Gusto bi-weekly (~$3-4K wages + ~$1K taxes per cycle). Loans on balance sheet: M. Kurtzig ($21,800) and Due To/From Grace K. ($23,000) -- terms and repayment unconfirmed. Negative equity (~-$78K) is cumulative from startup years -- trajectory improving. BofA cash back rewards (~$125-188/mo) deposited to checking, coded to 7020 Other Income -- correct. CC interest coded to 7510.',
-    defaultOI: [
-      { desc: 'BofA MC ~$68K balance with ~$1,000/mo interest -- paydown strategy needed before PF implementation', amt: '$1,053.68', pri: 'HIGH' },
-      { desc: 'Loan M. Kurtzig ($21,800) and Due To/From Grace K. ($23,000) -- confirm terms and repayment status', amt: '$44,800', pri: 'MEDIUM' },
-      { desc: 'Westwood Rose $2,000 on 12/9 -- confirm purpose (coded to Advertising)', amt: '$2,000.00', pri: 'MEDIUM' },
-      { desc: 'Willow Camp PR $1,099 on 12/18 -- one-time or recurring? Confirm PR/marketing engagement', amt: '$1,099.00', pri: 'MEDIUM' },
-      { desc: 'Nordstrom $150 on 12/24 coded to Office Supplies -- confirm business purpose or reclassify', amt: '$150.00', pri: 'LOW' },
-      { desc: 'Ross $116.88 on 12/18 coded to Office Supplies -- confirm business purpose (workspace decor?)', amt: '$116.88', pri: 'LOW' },
-      { desc: 'Vitality Bowls $12.00 on 12/22 coded to Advertising -- confirm event-related or reclassify to meals', amt: '$12.00', pri: 'LOW' }
-    ]
-  },
-  {
-    id: 'spirit',
-    name: 'Spirit Pharmacist LLC',
-    entity: 'LLC (S-Corp election)',
-    basis: 'Cash',
-    classes: '',
-    notes: 'Online psychedelic psychopharmacology education company. Owner Ben Malcolm. Two active shareholder equity accounts: BM (Ben Malcolm) and SMG -- both active. Revenue streams in order of size: Membership (monthly $99, annual $999, healthcare student $20-79 -- via Kajabi and PayPal -- highest volume, most recurring), Mastermind (premium cohort, ~$103K in 2025, quarterly launches), Course sales (Kajabi), Consulting ($100-300/session via Calendly/Kajabi/PayPal), Lecture/speaking (smallest). Profit First client since July 2022. TAPs: Owner Pay 45% (WF 0077), OpEx 30% (WF 0069), Tax 17% (WF 0168), Profit 8% (WF 6578 -- 70% Profit Reserve, 30% Future Growth Fund). Income Checking WF 7260 allocates twice monthly (10th and 25th) to ~$0. JMD fee $697 debits from Income Checking 7260 before PF allocation -- established pattern, not an error. Kajabi clears to WF Income Checking weekly; PayPal sweeps periodically. Merchant fees netted at source. Robinhood Savings (~$31.6K, SEP IRA/retirement) and Robinhood Brokerage (~$75K, Costa Rica construction earmark) are NOT operating reserves. Ben is developing a Costa Rica property (Homestay Retreat). International wires to Norlan Munguia and Arad Segal (Costa Rica contractors) from OpEx Checking -- no 1099 required; $25 WF wire fee each. January and quarter-ends are heavy retirement contribution months (LPL + Robinhood ETF buys) -- large lumpy retirement expense is expected, not a trend concern. Refund rate ~8-9% of gross some months -- watch for elevated trends (2025 annual was 4.0%). Employee Myla ~$6,500/yr -- confirm 2026 status. CPA John Hopkins handles tax strategy and salary/distribution. PF deep dive quarterly only. Do not produce advisory commentary.',
-    defaultOI: [
-      { desc: '2025 tax return -- confirm filing timeline and estimated 2026 payments with CPA John Hopkins', amt: '', pri: 'HIGH' },
-      { desc: 'Myla employment status -- confirm 2026 pay schedule and current wages', amt: '', pri: 'MEDIUM' },
-      { desc: 'Norlan Munguia and Arad Segal (Costa Rica) -- confirm scope, frequency, project allocation', amt: '', pri: 'MEDIUM' },
-      { desc: '2026 retirement contribution plan -- confirm LPL and Robinhood target amounts and timing', amt: '', pri: 'MEDIUM' },
-      { desc: 'Sfera Legal fee paid from Owner Pay 0077 -- confirm if should be OpEx instead', amt: '', pri: 'LOW' },
-      { desc: 'Google One $1.99/mo -- confirm business or personal', amt: '$1.99', pri: 'LOW' }
-    ]
-  },
-  {
-    id: 'holland',
-    name: 'Holland Communications LLC',
-    entity: 'S-Corporation',
-    basis: 'Cash',
-    classes: '',
-    notes: 'Executive coaching, leadership development, communications consulting. Owner Andrea Holland, sole shareholder. QBO name is "Andrea Holland Coaching" (same entity, different name in QuickBooks). Profit First client, active since 2024, completed PFQ8 in 2025. TAPs: Profit 5% (CB 2521), Owner\'s Comp 40% (CB 7999), Tax 15% (CB 2513), OpEx 40% (CB 7981). Income Checking CB 7973 retains $500 buffer after allocation. Contractor pre-allocation BEFORE TAPs: iBoss/Lenica Stevens (~$2,000/mo CC auto-charge, operations support) and Nikki/Angela Parris (~$1,000/mo via Gusto, coaching support) are funded from gross revenue first. Formula: Income Balance - $500 buffer - contractor funding = allocable revenue; TAPs apply to allocable revenue only. Andrea\'s W-2 salary (~$2,428 net twice monthly on 15th and last day) paid from Owner Pay 7999, NOT from OpEx. Payroll taxes and fees come from OpEx 7981 -- do not mix these up. Revenue is lumpy: coaching invoices batch (e.g., University of Rochester sends multiple invoices at once) -- not a red flag. Rochester, NY based; local vendors (Greenlight Networks, Rochester Chamber, Stacy K Floral) are normal. NY State PTE tax ~$1,000 in December -- recurring annual obligation paid from Tax Savings. Three active debts all growing at minimums: Citi 6918 (~$8,411 at 28% APR, $86/mo min), CN Bank CC 1137 (~$9,246 at 28% APR, $118.01/mo min), CN Bank LOC 2313 (~$31,749 at 9% APR, $180/mo min). Debt reduction plan in place. Rush Digital $1,950/mo digital marketing on Delta AMEX. ActiveCampaign $825/mo email marketing. Ensure P&L exports are on Cash Basis every month (January 2026 was accidentally exported Accrual). JMD fee currently $997 (discounted), returning to $1,597 approx April 2026. Do not produce advisory commentary.',
-    defaultOI: [
-      { desc: 'Debt Phase 1 -- increase payments from $384 to $700/mo starting March', amt: '', pri: 'URGENT' },
-      { desc: 'Collect outstanding AR $19,407 -- Starbridge $7,407 is priority (61-90 days)', amt: '$19,407', pri: 'HIGH' },
-      { desc: 'JMD fee returning to $1,597 targeting approximately April 2026', amt: '$1,597', pri: 'MEDIUM' },
-      { desc: 'Confirm contractor PF funding accounts -- Lenica (CC auto) and Nikki (Gusto) -- which account funds each?', amt: '', pri: 'MEDIUM' },
-      { desc: 'Build SOPs HC-FIN-001 (Weekly Cash Req) and HC-FIN-002 (Monthly PF Allocation)', amt: '', pri: 'MEDIUM' },
-      { desc: 'Spotify $19.99/mo coded as Office Supplies -- confirm business or personal', amt: '$19.99', pri: 'LOW' },
-      { desc: 'Google One $0.53/mo -- confirm business or personal', amt: '$0.53', pri: 'LOW' }
-    ]
-  },
-  {
-    id: 'eoe',
-    name: 'Elite Ops Exterminators',
-    entity: 'S-Corporation',
-    basis: 'Accrual',
-    classes: '',
-    notes: 'Pest control, residential and commercial, DC/MD/VA market. Owner Darrell DJ Profit, sole shareholder. Tier 1 Full Advisory. Profit First client, active since January 2026. Bi-monthly allocations (10th and 25th). Real Revenue formula: Total Income - Materials & Subs - H.E.R.O. Wages. TAPs apply to Real Revenue only. TAPs: Profit 5% (Truist 1811), Owner Pay 15% (Truist 1852), Tax 10% (Truist 1829), Operating 70% (Truist 1849). Payroll account Truist 1845 receives flat $20,800 per allocation (H.E.R.O. $11,355 + DJ wages $4,245 + Natalia/taxes $5,200). DJ owner draw $4,440.50 bi-monthly to personal ($8,881/mo total). Income Checking Truist 1803 should be ~$0 after each allocation; remaining balance means allocation incomplete. S-Corp comp structure: DJ W-2 salary $5,416.67/mo (carved from H.E.R.O. Wages via payroll AJE), plus distributions $8,881/mo -- deliberate 199A tax strategy, do not flag. Natalia (Ops Director) salary $9,000/mo via payroll AJE from H.E.R.O. Wages. Payroll AJE: Gusto posts gross as H.E.R.O. Wages 5050, then monthly AJE carves out DJ to 5810 and Natalia to 5812 -- expected, not miscoding. Revenue invoiced through Jobber as "Elite Monthly Jobber Billing" two invoices/month. Revenue splits by geography (DC ~87% recurring) and type (recurring ~79%). Seasonal: Q1 slowest, revenue ramps through spring/summer. December $97,699 to January $78,580 dip is expected seasonality -- do not flag. Fleet: 5+ service vehicles, $7K-$10K/mo total vehicle costs (GM Financial loans ~$363,533 total, ~$2,900/mo interest, Forge Insurance $2,041/mo, Drive EZ tolls ~$350/week, Linxup GPS $407/mo). AMEX CC 1025 has multiple card numbers (1025, 1041, 1009, 1058) -- all same account. Employee Expense Card 8633 used for technician fuel/car washes -- small dollar amounts are normal. December year-end anomaly: $112,737 depreciation + $15,974 bad debt write-off drove large net loss -- not a monthly norm, do not compare December to other months. EOF franchise investment $78,248 on balance sheet -- payments held at $0, not forgiven. Jobber merchant fees ~$1,500-$2,000/mo booked via monthly JE, not bank transaction. DC sales tax collected on taxable services, tracked in Allocation Calculator. CPA John Hopkins handles S-Corp compliance and 199A QBI optimization.',
-    defaultOI: [
-      { desc: 'VAULT account setup on Relay -- target $180,556 (3 months OpEx)', amt: '$180,556', pri: 'HIGH' },
-      { desc: 'SEP-IRA setup -- max $22,965, graduated funding schedule ready', amt: '$22,965', pri: 'HIGH' },
-      { desc: 'S-Corp reasonable comp confirmation -- CPA John to validate 2026 salary level', amt: '', pri: 'HIGH' },
-      { desc: 'Hire additional H.E.R.O. technician -- budgeted in payroll at $11,355 bi-monthly', amt: '', pri: 'HIGH' },
-      { desc: 'Feb 25th allocation shortfall $8,459 -- monitor cash flow, may need supplemental OpEx transfer', amt: '$8,459', pri: 'HIGH' },
-      { desc: 'Account swap/relabeling in QBO -- 1829 Tax and 1852 Owner Pay need correction', amt: '', pri: 'MEDIUM' },
-      { desc: 'VA Dept of Taxation $322 payment posted from Owner Pay instead of Tax -- document and reconcile', amt: '$322.00', pri: 'MEDIUM' },
-      { desc: 'SUTA rate monitoring -- DC unemployment rate elevated ($1,882 in Jan)', amt: '', pri: 'MEDIUM' }
-    ]
-  },
-  {
-    id: 'slater',
-    name: 'Slater Interior Design',
-    entity: 'LLC (S-Corp election)',
-    basis: 'Cash',
-    classes: '',
-    notes: 'Interior design -- services and product resale. DBA Well-Designed Home. Owner Melinda Slater, sole member/shareholder and sole W-2 employee. WA state does not recognize S-Corp election for payroll purposes -- entity treated as LLC for WA PFML, WA Cares Fund, and SUI. Exemptions filed for WA PFML and WA Cares Fund (~$603/yr savings). Two revenue streams: design/consultation services (billed hourly by project, lumpy $8K-$30K+/mo, Q1 and summer are typically slow) and product resale (furniture/materials/fixtures sourced for clients, sporadic -- some months $0, creates COGS and WA sales tax when present). All client invoicing through QuickBooks Payments. Profit First client since April 2022. TAPs: Owner\'s Pay 35% (BECU 2652), OpEx 50% (BECU 2678), Tax 10% (BECU 2587), Profit 5% (BECU 2503, quarterly transfers to First Fed 2967 for higher yield). Income Checking BECU 9283 should allocate to ~$0 each month ($500 buffer retained). Subs & Materials BECU 9778 holds client material deposits ~$5K -- NOT part of PF allocation flow. Sales tax and material costs deducted before Real Revenue calculation. Melinda W-2 wages $3,625/mo via Gusto from Owner Pay BECU 2652, not from OpEx. Gusto processing fees ~$61/mo debit from Owner Pay account, not OpEx. Cochran Admin Services paid via ACH and occasionally CC -- mixed methods are normal. Bibby Fine Interiors (Canada) is international, no 1099 required, paid via CC. Real Marketing Solutions $2,000/mo and Jan Carter are domestic 1099 contractors. WA B&O and sales tax paid from Tax Savings. PF deep dive quarterly. Do not produce advisory commentary.',
-    defaultOI: []
-  },
-  {
-    id: 'aai',
-    name: 'Atlas Adventures International',
-    entity: 'Sole Proprietorship',
-    basis: 'Cash',
-    classes: '',
-    notes: 'Luxury women-only group travel (Atlas Adventures International) and individual travel planning (Blonde Atlas) -- both revenue streams in one QBO file. Owner Whitney Haldeman, London-based US citizen, files as sole proprietor with foreign earned income exclusion. Tier 1 Full Advisory. Revenue accounts: 4200 AAI Group Travel (94% of 2025 revenue), 4210 Blonde Atlas Individual Travel Planning, 4220 Affiliate Income. Primary banking: Wise USD 6308 (~$214K). Multi-currency operations (USD, GBP, EUR, ZAR, PEN, EGP, JPY, CHF, NZD, SEK, MAD) -- exchange gain/loss entries are routine. AMEX Business CC 1006 carries $100K+ during trip booking season due to hotel/vendor prepayments -- expected, not a red flag. Prepaid Trip Expenses on balance sheet (~-$330K) = hotel prepayments for future trips released to COGS when trip occurs -- large negative balance is normal. Negative gross profit in heavy prepayment months is expected and is a timing issue, not a profitability problem. Month-end income reclassification JEs (e.g., 2601 JMD Reclass Sale) move income between 4200 and specific trip projects -- large offsetting debits/credits in income section are expected and net to zero. Stripe clearing account 1040 should net to zero after reconciliation. 1030 Cash Clearing (personal CC reimbursements) should also reconcile to zero -- negative balance means business owes Whitney. US contractors paid via Gusto (funded from Wise USD); Gusto debit may appear as lump sum needing matching to individual contractor bills. Unapplied Cash Bill Payment Expense = unmatched Gusto payments. GBP-based charges on AMEX are normal business expenses (Whitney is London-based). No 1099 required for international contractors (Wise payments). Trip margins target 30-35%; 2025 average 31%. 12 group trips in 2025, all profitable. VAT handled by HTJ.Tax (Derren/Weldon) quarterly. PF implementation on hold due to cash position (~$490K hotel prepayments impacted reserves). JMD fee pricing realignment in progress ($2,500/mo does not reflect Tier 1 scope).',
-    defaultOI: [
-      { desc: 'JMD fee pricing realignment -- $2,500/mo does not reflect Tier 1 scope of services', amt: '$2,500', pri: 'HIGH' },
-      { desc: 'Unapplied Cash Bill Payment Expense ($5,819.72 Gusto 2/6/2026) -- match to contractor bills', amt: '$5,819.72', pri: 'HIGH' },
-      { desc: '1011 N Stafford St Arlington -- $575.57 in 9999 Client to Advise + $1,017.81 in 5130 Meals -- confirm purpose', amt: '$1,593.38', pri: 'MEDIUM' },
-      { desc: '1030 Cash Clearing balance -$1,034.00 -- business owes Whitney, needs reimbursement or reclassification', amt: '$1,034.00', pri: 'MEDIUM' },
-      { desc: '1040 Stripe Clearing balance $21,402.87 -- should net to zero, needs reconciliation', amt: '$21,402.87', pri: 'MEDIUM' },
-      { desc: 'PF implementation on hold -- revisit when cash reserves recover from prepayment cycle', amt: '', pri: 'MEDIUM' },
-      { desc: '3173 RB Income account balance $1,050 -- verify purpose and clear', amt: '$1,050.00', pri: 'LOW' },
-      { desc: 'Airalo $4.50 coded to 9999 Client to Advise -- confirm business or personal', amt: '$4.50', pri: 'LOW' }
-    ]
-  },
-  {
-    id: 'vi',
-    name: 'Vivid Imagination Inc.',
-    entity: 'S-Corporation',
-    basis: 'Cash',
-    classes: '',
-    notes: 'EdTech -- VR, drone, and technology programs for K-12 schools. Owner Branden Baskin, W-2 at $100K S-Corp reasonable comp (implemented 2025). Three revenue lines in one QBO file: School Programs (core, primary revenue), Drone Product Sales (early stage), Private Events (early stage). Revenue is seasonal -- school contracts front-loaded in spring, May/June are primary collection months, Q1 and Q4 typically lower. 90-day AR cycle typical -- do not flag slow collections as unusual. Contractor commissions paid the month AFTER the school pays the invoice, not when contract is signed. Prepaid contracts (schools paying in advance) must go to unearned revenue and recognized when services delivered -- process being established with Kelly in 2026. ~30 active coach contractors -- invoices submitted via Hubdoc, entered in QBO by JMD, compared against Gusto before processing. Semi-monthly payroll cycles: Cycle 1 (15th) pays all coaches + Erika Bayh; Cycle 2 (end of month) pays Nicolette Calandra, JMD, and Simplification Services. Branden W-2 payroll currently skipped in regular Gusto cycles per S-Corp setup handled separately. Non-Gusto payments (Zelle, Cash App, etc.) require historical Gusto entry for 1099 tracking. Sharzer Associates (Danielle Scire) 20% sales commission -- JMD manages correspondence. Elaine Porcher VP of Development 10% commission added to W-2. Chase Savings ~$200K reserve (year-end 2025). 2025 revenue $1,076,510 (+206% YoY). PF rollout planned Q2 2026 -- framework in place. Drone sales tax compliance under review, not yet resolved. Entity separation under discussion for 3 business lines. CPA John handles S-Corp compliance and tax filing. Do not produce advisory commentary.',
-    defaultOI: [
-      { desc: 'Ghana expansion outline -- define revenue line classification and entity setup', amt: '', pri: 'HIGH' },
-      { desc: 'Nova LLC formation -- confirm legal structure and status', amt: '', pri: 'HIGH' },
-      { desc: 'Year-end report finalization -- confirm anything still needed for CPA John', amt: '', pri: 'HIGH' },
-      { desc: 'Prepaid contract identification with Kelly -- unearned revenue setup', amt: '', pri: 'HIGH' },
-      { desc: 'Wise account setup and currency workflow', amt: '', pri: 'MEDIUM' },
-      { desc: 'Drone supplier and manufacturing plan -- confirm margin impact', amt: '', pri: 'MEDIUM' },
-      { desc: 'Erica billing process -- confirm functioning correctly', amt: '', pri: 'MEDIUM' },
-      { desc: 'SEP IRA contribution guidance from CPA John -- limits and deadline', amt: '', pri: 'MEDIUM' },
-      { desc: 'Profit First rollout plan -- confirm percentages and benevolence allocation with Jenni/Branden', amt: '', pri: 'MEDIUM' },
-      { desc: 'Personal expenses moving to business accounts -- in progress', amt: '', pri: 'MEDIUM' },
-      { desc: 'Drone sales tax review -- compliance not yet resolved', amt: '', pri: 'MEDIUM' },
-      { desc: 'Kelly monthly meeting cadence established -- invoicing training plan', amt: '', pri: 'MEDIUM' }
-    ]
-  },
-
   // ADD NEW CLIENTS HERE - copy a block above, assign a unique id, fill in all fields
 ];
 
@@ -1063,42 +893,6 @@ ADDITIONAL CONTEXT FOR THIS MONTH
 ${notes}
 ` : '';
 
-  const pl1Label = hasClasses
-    ? `Profit and Loss by Class — ${month} ${year} only`
-    : `Profit and Loss — ${month} ${year} only`;
-  const pl2Label = hasClasses
-    ? `Profit and Loss by Class — ${month} vs ${prevLabel} (comparison)`
-    : `Profit and Loss — ${month} vs ${prevLabel} (comparison)`;
-  const perfTableLabel = hasClasses
-    ? 'Performance by Class'
-    : 'Performance Summary';
-
-  const tab2Block = hasClasses
-    ? `TAB 2: CLASS AUDIT
-All transactions from P&L Detail. Columns: Date, Transaction Type, Vendor, Location/Mailing, Class, Account, Payment Account, Amount, Memo/Description, Flag, Flag Notes.
-Flag: missing class, class/payment account mismatch, known vendor in wrong class, new vendor.
-Payment account pattern: Kelly card = Kelly class, Randy card = Randy class, Ameris Checking = Joint or either.`
-    : `TAB 2: TRANSACTION REVIEW
-All transactions from P&L Detail. Columns: Date, Transaction Type, Vendor, Account, Payment Account, Amount, Memo/Description, Flag, Flag Notes.
-Flag: known vendor in unexpected account, new vendor not in Client Profile, missing memo on transactions that need research.`;
-
-  const errorPatternsBlock = hasClasses
-    ? `1. Transactions missing class assignment
-2. Payment account does not match expected class (Kelly card/Kelly class, Randy card/Randy class)
-3. Known vendor in unexpected account or class
-4. New vendors not in Client Profile
-5. Generic vendor names — expected but verify class and account
-6. PayPal transactions — verify actual vendor in memo
-7. No memo on transactions that need research
-8. Journal entries missing vendor names`
-    : `1. Known vendor coded to unexpected account
-2. New vendors not in Client Profile
-3. Generic vendor names — expected but verify account is correct
-4. PayPal transactions — verify actual vendor in memo
-5. No memo on transactions that need research
-6. Journal entries missing vendor names
-7. Expenses that may be miscoded to owner draw (or vice versa)`;
-
   const prompt = `HANDOFF PROMPT — ${month.toUpperCase()} ${year} MONTHLY CLOSE
 Client: ${clientName}${entityType ? ' (' + entityType + ')' : ''}
 Basis: ${basis}
@@ -1123,8 +917,8 @@ REPORTS ATTACHED
 ====================================================================
 
 QBO Exports (all ${basis} Basis, ${month} ${year}):
-1. ${pl1Label}
-2. ${pl2Label}
+1. Profit and Loss by Class — ${month} ${year} only
+2. Profit and Loss by Class — ${month} vs ${prevLabel} (comparison)
 3. Profit and Loss Detail — ${month} ${year}
 4. Balance Sheet Detail — as of ${month} ${ld}, ${year}
 
@@ -1160,7 +954,7 @@ FORMAT (match exactly):
     Key Figures  [bold, underlined]
     [Table: Metric | ${month} ${year} | ${prevLabel}]
 
-    ${perfTableLabel}  [bold, underlined]
+    Performance by Class  [bold, underlined]
     [Table: full words only — Gross Profit, Operating Expenses, Net Income; current + prior month columns]
 
 QUICK NOTE RULES:
@@ -1194,7 +988,10 @@ TAB 1: VERIFICATION SUMMARY
 - Blank vendor names, blank memos
 - Overall pass/fail status
 
-${tab2Block}
+TAB 2: CLASS AUDIT
+All transactions from P&L Detail. Columns: Date, Transaction Type, Vendor, Location/Mailing, Class, Account, Payment Account, Amount, Memo/Description, Flag, Flag Notes.
+Flag: missing class, class/payment account mismatch, known vendor in wrong class, new vendor.
+${hasClasses ? `Payment account pattern: Kelly card = Kelly class, Randy card = Randy class, Ameris Checking = Joint or either.` : ''}
 
 TAB 3: ACCOUNT CODING AUDIT
 Cross-reference each vendor against Client Profile known vendor list.
@@ -1211,7 +1008,15 @@ COLOR CODING (JMD standards):
 Navy headers, white bold text. Yellow = needs review. Red = error or flag. Green = verified/OK.
 
 ERROR PATTERNS TO WATCH:
-${errorPatternsBlock}
+1. Transactions missing class assignment
+2. Payment account does not match expected class${hasClasses ? ` (Kelly card/Kelly class, Randy card/Randy class)` : ''}
+3. Known vendor in unexpected account or class
+4. New vendors not in Client Profile
+5. Generic vendor names — expected but verify class and account
+6. PayPal transactions — verify actual vendor in memo
+7. No memo on transactions that need research
+8. Journal entries missing vendor names
+9. Expenses that may be miscoded to owner draw (or vice versa)
 
 ====================================================================
 DELIVERABLE 3: UPDATED CLIENT PROFILE
@@ -1270,8 +1075,8 @@ WHAT NOT TO DO
   document.getElementById('outputWrap').classList.add('show');
 
   const files = [
-    { name: pl1Label + '.xlsx', type: 'xlsx' },
-    { name: pl2Label + '.xlsx', type: 'xlsx' },
+    { name: `P&L by Class — ${month} ${year} only.xlsx`, type: 'xlsx' },
+    { name: `P&L by Class — ${month} vs ${prevLabel}.xlsx`, type: 'xlsx' },
     { name: `P&L Detail — ${month} ${year}.xlsx`, type: 'xlsx' },
     { name: `Balance Sheet Detail — ${month} ${ld}, ${year}.xlsx`, type: 'xlsx' },
     { name: `${clientName}_Client_Profile.docx`, type: 'docx' },
